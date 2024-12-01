@@ -9,4 +9,4 @@ class redLight
 public:
     void startGame();
     void setNonBlockingInput(bool enable);
-}
+};

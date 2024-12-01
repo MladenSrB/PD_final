@@ -1,27 +1,27 @@
 #include "redistributable.h"
-
-const int WINDOW_WIDTH = 80;    // 終端寬度 (用於顯示遊戲)
-const int PLAYER_START_POS = 1; // 玩家起始位置
-const int FINISH_LINE_X = 70;   // 終點位置
-const int TIME_LIMIT = 10;      // 時間限制 (秒)
-const float BUFFER_TIME = 0.4;  // 紅燈緩衝時間
+#include "redLight.h"
 
 // set terminal to non blocking mode
-void setNonBlockingInput(bool enable) {
+void setNonBlockingInput(bool enable)
+{
     struct termios tty;
     tcgetattr(STDIN_FILENO, &tty);
-    if (enable) {
+    if (enable)
+    {
         tty.c_lflag &= ~(ICANON | ECHO);
         tcsetattr(STDIN_FILENO, TCSANOW, &tty);
         fcntl(STDIN_FILENO, F_SETFL, fcntl(STDIN_FILENO, F_GETFL) | O_NONBLOCK); // 設置非阻塞模式
-    } else {
+    }
+    else
+    {
         tty.c_lflag |= (ICANON | ECHO);
         tcsetattr(STDIN_FILENO, TCSANOW, &tty);
         fcntl(STDIN_FILENO, F_SETFL, fcntl(STDIN_FILENO, F_GETFL) & ~O_NONBLOCK); // 關閉非阻塞模式
     }
 }
 
-int main() {
+void startGame()
+{
     // initialize game
     int playerPos = PLAYER_START_POS;
     bool isRedLight = false;
@@ -35,14 +35,16 @@ int main() {
 
     setNonBlockingInput(true); // enable terminal non blocking mode
 
-    while (timeLeft > 0) {
+    while (timeLeft > 0)
+    {
         // calculate time left
         auto now = std::chrono::steady_clock::now();
         timeLeft = TIME_LIMIT - static_cast<int>(
-                std::chrono::duration_cast<std::chrono::seconds>(now - startTime).count());
+                                    std::chrono::duration_cast<std::chrono::seconds>(now - startTime).count());
 
         // switch light randomly
-        if (std::rand() % 100 < 5) { // 5% 機率每迴圈切換燈號
+        if (std::rand() % 100 < 5)
+        { // 5% 機率每迴圈切換燈號
             isRedLight = !isRedLight;
             redLightTime = now;
         }
@@ -55,32 +57,44 @@ int main() {
         std::cout << (isRedLight ? "RED LIGHT" : "GREEN LIGHT") << "\n";
 
         // 顯示遊戲場景
-        for (int i = 0; i < WINDOW_WIDTH; ++i) {
-            if (i == playerPos) {
+        for (int i = 0; i < WINDOW_WIDTH; ++i)
+        {
+            if (i == playerPos)
+            {
                 std::cout << "P"; // 玩家
-            } else if (i == FINISH_LINE_X) {
+            }
+            else if (i == FINISH_LINE_X)
+            {
                 std::cout << "|"; // 終點線
-            } else {
+            }
+            else
+            {
                 std::cout << "-";
             }
         }
         std::cout << "\n";
 
         // 檢查玩家是否到達終點
-        if (playerPos >= FINISH_LINE_X) {
+        if (playerPos >= FINISH_LINE_X)
+        {
             std::cout << "Phew! You made it!\n";
             break;
         }
 
         // 處理玩家輸入
         char input;
-        if (read(STDIN_FILENO, &input, 1) > 0) { // 非阻塞讀取輸入
-            if (input == 'a' || input == 'A') {
+        if (read(STDIN_FILENO, &input, 1) > 0)
+        { // 非阻塞讀取輸入
+            if (input == 'a' || input == 'A')
+            {
                 playerPos = std::max(playerPos - 1, 0); // 向左移動
-            } else if (input == 'd' || input == 'D') {
+            }
+            else if (input == 'd' || input == 'D')
+            {
                 // 檢查是否違反紅燈規則
                 float timeSinceRed = std::chrono::duration_cast<std::chrono::milliseconds>(now - redLightTime).count() / 1000.0;
-                if (isRedLight && timeSinceRed > BUFFER_TIME) {
+                if (isRedLight && timeSinceRed > BUFFER_TIME)
+                {
                     std::cout << "You moved during RED LIGHT! Game Over!\n";
                     break;
                 }
@@ -92,11 +106,10 @@ int main() {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
-    if (timeLeft <= 0) {
+    if (timeLeft <= 0)
+    {
         std::cout << "Time's up! Game Over!\n";
     }
 
     setNonBlockingInput(false); // 恢復終端默認模式
-
-    return 0;
 }

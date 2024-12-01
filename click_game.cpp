@@ -6,24 +6,24 @@ using namespace chrono;
 
 class click_game()
 {
-protected:
-    bool hasRevive = true;
-    int monsterHP = 30;
-    int totalClicks = 0;
-    int roundClicks = 0;
-    int currentVisibleLines;
+    protected:
+        bool hasRevive = true;
+        int monsterHP = 30;
+        int totalClicks = 0;
+        int roundClicks = 0;
+        int currentVisibleLines;
 
-public:
-    bool isKeyPressed();
-    char getKey();
-    void setNonBlockingInput(bool enable);
-    bool isKeyPressed();
-    char getKey();
-    void clearScreen();
-    char getLastInput();
-    void printMonster(const vector<string> &monster, int visibleLines);
-    void playGame(bool &hasRevive, int &monsterHP, int &totalClicks, int &roundClicks, int &currentVisibleLines, int maxHP, bool isFirstRun);
-}
+    public:
+        bool isKeyPressed();
+        char getKey();
+        void setNonBlockingInput(bool enable);
+        bool isKeyPressed();
+        char getKey();
+        void clearScreen();
+        char getLastInput();
+        void printMonster(const vector<string> &monster, int visibleLines);
+        void playGame(bool &hasRevive, int &monsterHP, int &totalClicks, int &roundClicks, int &currentVisibleLines, int maxHP, bool isFirstRun);
+    }
 
 // constructor
 click_game::click_game(bool hasRevive, int monsterHP, int totalClicks, int roundClicks)
@@ -45,7 +45,7 @@ click_game::char getKey()
     return _getch();
 }
 #else
-click_game::void setNonBlockingInput(bool enable)
+void click_game::setNonBlockingInput(bool enable)
 {
     static struct termios oldt, newt;
     if (enable)
@@ -61,7 +61,7 @@ click_game::void setNonBlockingInput(bool enable)
     }
 }
 
-click_game::bool isKeyPressed()
+bool click_game::isKeyPressed()
 {
     struct timeval tv = {0L, 0L};
     fd_set fds;
@@ -70,7 +70,7 @@ click_game::bool isKeyPressed()
     return select(STDIN_FILENO + 1, &fds, NULL, NULL, &tv) > 0;
 }
 
-click_game::char getKey()
+char click_game::getKey()
 {
     char c;
     read(STDIN_FILENO, &c, 1);
@@ -78,7 +78,7 @@ click_game::char getKey()
 }
 #endif
 
-click_game::void clearScreen()
+void click_game::clearScreen()
 {
     for (int i = 0; i < 50; ++i)
     {
@@ -86,7 +86,7 @@ click_game::void clearScreen()
     }
 }
 
-click_game::char getLastInput()
+char click_game::getLastInput()
 {
     string input;
     char lastValidChar = '\0';
@@ -101,7 +101,7 @@ click_game::char getLastInput()
     return tolower(lastValidChar); // 將最後有效字元轉為小寫
 }
 
-click_game::void printMonster(const vector<string> &monster, int visibleLines)
+void click_game::printMonster(const vector<string> &monster, int visibleLines)
 {
     cout << "\n怪物狀態：" << endl;
     for (int i = 0; i < visibleLines; i++)
@@ -111,7 +111,7 @@ click_game::void printMonster(const vector<string> &monster, int visibleLines)
     cout << endl;
 }
 
-click_game::void playGame(bool &hasRevive, int &monsterHP, int &totalClicks, int &roundClicks, int &currentVisibleLines, int maxHP, bool isFirstRun)
+void click_game::playGame(bool &hasRevive, int &monsterHP, int &totalClicks, int &roundClicks, int &currentVisibleLines, int maxHP, bool isFirstRun)
 {
     const int durationInSeconds = 10;
 

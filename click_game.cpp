@@ -1,4 +1,4 @@
-#include "click_game."
+#include "click_game.h"
 
 using namespace std;
 using namespace chrono;

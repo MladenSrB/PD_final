@@ -6,7 +6,11 @@ const float BUFFER_TIME = 0.4;  // 紅燈緩衝時間
 
 class redLight
 {
+protected:
+    int lostHP = -1;
+    int gainedEXP = -1;
+
 public:
     void startGame();
     void setNonBlockingInput(bool enable);
-}
+};

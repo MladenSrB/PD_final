@@ -22,6 +22,8 @@ void setNonBlockingInput(bool enable)
 
 void startGame()
 {
+    bool isSucceed = false;
+
     // initialize game
     int playerPos = PLAYER_START_POS;
     bool isRedLight = false;
@@ -78,6 +80,7 @@ void startGame()
         if (playerPos >= FINISH_LINE_X)
         {
             std::cout << "Phew! You made it!\n";
+            isSucceed = true;
             break;
         }
 
@@ -108,7 +111,16 @@ void startGame()
 
     if (timeLeft <= 0)
     {
-        std::cout << "Time's up! Game Over!\n";
+        std::cout << "Times up! you lost!";
+    }
+
+    if (isSucceed)
+    {
+        std::cout << "You've gained " << gainedEXP << " EXP!" << '\n';
+    }
+    else
+    {
+        std::cout << "You've lost " << lostHP << " pts of HP!" << '\n';
     }
 
     setNonBlockingInput(false); // 恢復終端默認模式

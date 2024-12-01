@@ -1,6 +1,6 @@
 #include "redistributable.h"
-#include "item.h"
 #include "character.h"
+#include "item.h"
 
 using namespace std;
 

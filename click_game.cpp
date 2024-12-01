@@ -4,133 +4,82 @@ using namespace std;
 using namespace chrono;
 //test
 
-class click_game()
+class click_game
 {
-    protected:
-        bool hasRevive = true;
-        int monsterHP = 30;
-        int totalClicks = 0;
-        int roundClicks = 0;
-        int currentVisibleLines;
+private:
+    bool hasRevive;
+    int monsterHP;
+    int totalClicks;
+    int roundClicks;
+    int currentVisibleLines;
+    const int maxHP = 30;
+    const int durationInSeconds = 10;
 
-    public:
-        bool isKeyPressed();
-        char getKey();
-        void setNonBlockingInput(bool enable);
-        bool isKeyPressed();
-        char getKey();
-        void clearScreen();
-        char getLastInput();
-        void printMonster(const vector<string> &monster, int visibleLines);
-        void playGame(bool &hasRevive, int &monsterHP, int &totalClicks, int &roundClicks, int &currentVisibleLines, int maxHP, bool isFirstRun);
-    }
+    vector<string> monster = {
+        "   (o_o)   ",
+        "  <|   |>  ",
+        "   |   |   ",
+        "  /|   |\\  ",
+        " /_|   |_\\ ",
+    };
 
-// constructor
-click_game::click_game(bool hasRevive, int monsterHP, int totalClicks, int roundClicks)
-{
-    this->hasRevive = true;
-    this->monsterHP = 30;
-    this->totalClicks = 0;
-    this->roundClicks = 0;
-}
-
-// 跨平台按鍵檢測函數
-#ifdef _WIN32
-click_game::bool isKeyPressed()
-{
-    return _kbhit();
-}
-click_game::char getKey()
-{
-    return _getch();
-}
-#else
-void click_game::setNonBlockingInput(bool enable)
-{
-    static struct termios oldt, newt;
-    if (enable)
+    // 跨平台按键检测函数
+    char getch()
     {
+        struct termios oldt, newt;
+        char ch;
         tcgetattr(STDIN_FILENO, &oldt);
         newt = oldt;
         newt.c_lflag &= ~(ICANON | ECHO);
         tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-    }
-    else
-    {
+        ch = getchar();
         tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+        return ch;
     }
-}
 
-bool click_game::isKeyPressed()
-{
-    struct timeval tv = {0L, 0L};
-    fd_set fds;
-    FD_ZERO(&fds);
-    FD_SET(STDIN_FILENO, &fds);
-    return select(STDIN_FILENO + 1, &fds, NULL, NULL, &tv) > 0;
-}
-
-char click_game::getKey()
-{
-    char c;
-    read(STDIN_FILENO, &c, 1);
-    return c;
-}
-#endif
-
-void click_game::clearScreen()
-{
-    for (int i = 0; i < 50; ++i)
+    void clearScreen()
     {
-        cout << endl;
-    }
-}
-
-char click_game::getLastInput()
-{
-    string input;
-    char lastValidChar = '\0';
-    getline(cin, input);
-    for (char c : input)
-    {
-        if (!isspace(c))
-        { // 檢查非空白字元
-            lastValidChar = c;
+        for (int i = 0; i < 50; ++i)
+        {
+            cout << endl;
         }
     }
-    return tolower(lastValidChar); // 將最後有效字元轉為小寫
-}
 
-void click_game::printMonster(const vector<string> &monster, int visibleLines)
-{
-    cout << "\n怪物狀態：" << endl;
-    for (int i = 0; i < visibleLines; i++)
+    char getLastInput()
     {
-        cout << monster[i] << endl;
-    }
-    cout << endl;
-}
-
-void click_game::playGame(bool &hasRevive, int &monsterHP, int &totalClicks, int &roundClicks, int &currentVisibleLines, int maxHP, bool isFirstRun)
-{
-    const int durationInSeconds = 10;
-
-    vector<string> monster =
+        string input;
+        char lastValidChar = '\0';
+        getline(cin, input);
+        for (char c : input)
         {
-            "   (o_o)   ",
-            "  <|   |>  ",
-            "   |   |   ",
-            "  /|   |\\  ",
-            " /_|   |_\\ ",
-        };
+            if (!isspace(c))
+            {
+                lastValidChar = c;
+            }
+        }
+        return tolower(lastValidChar);
+    }
 
-    if (isFirstRun)
+    void printMonster()
     {
-        currentVisibleLines = static_cast<int>(monster.size());
+        cout << "\n怪物狀態：" << endl;
+        for (int i = 0; i < currentVisibleLines; i++)
+        {
+            cout << monster[i] << endl;
+        }
+        cout << endl;
+    }
+
+public:
+    click_game() : hasRevive(true), monsterHP(30), totalClicks(0), roundClicks(0), currentVisibleLines(monster.size()) {}
+
+    void playGame()
+    {
+        srand(static_cast<unsigned int>(time(0)));
 
         cout << "===== 鍵盤連點遊戲 =====" << endl;
         cout << "一隻怪物出現了！" << endl;
-        printMonster(monster, currentVisibleLines);
+        printMonster();
         cout << "=== 規則 ===" << endl;
         cout << "在限定時間內快速點擊Enter 鍵來攻擊怪物！" << endl;
         cout << "每點擊一次Enter 鍵即可減少怪物 1 HP" << endl;
@@ -140,36 +89,23 @@ void click_game::playGame(bool &hasRevive, int &monsterHP, int &totalClicks, int
 
         while (true)
         {
-            if (isKeyPressed() && getKey() == '\n')
+            if (getch() == '\n')
             {
                 break;
             }
         }
+
         cout << "======================" << endl;
         cout << "遊戲開始！快攻擊怪物！" << endl;
-    }
-    else
-    {
-        cout << "\n======================" << endl;
-        cout << "繼續挑戰怪物！" << endl;
-        printMonster(monster, currentVisibleLines);
-    }
 
-    auto startTime = steady_clock::now();
-    auto endTime = startTime + seconds(durationInSeconds);
+        auto startTime = steady_clock::now();
+        auto endTime = startTime + seconds(durationInSeconds);
 
-#ifdef __unix__
-    setNonBlockingInput(true);
-#endif
+        roundClicks = 0;
 
-    roundClicks = 0;
-
-    while (steady_clock::now() < endTime)
-    {
-        if (isKeyPressed())
+        while (steady_clock::now() < endTime)
         {
-            char key = getKey();
-            if (key == '\n')
+            if (getch() == '\n')
             {
                 roundClicks++;
                 totalClicks++;
@@ -181,7 +117,7 @@ void click_game::playGame(bool &hasRevive, int &monsterHP, int &totalClicks, int
                 currentVisibleLines = max(1, (monsterHP * static_cast<int>(monster.size())) / maxHP);
 
                 clearScreen();
-                printMonster(monster, currentVisibleLines);
+                printMonster();
 
                 if (monsterHP == 0)
                 {
@@ -194,37 +130,34 @@ void click_game::playGame(bool &hasRevive, int &monsterHP, int &totalClicks, int
                     int reward = rand() % 100 + 1;
                     cout << "總計點擊次數：" << totalClicks << " 次！" << endl;
                     cout << "你獲得了 " << reward << " 金幣！" << endl;
-#ifdef __unix__
-                    setNonBlockingInput(false);
-#endif
                     return;
                 }
             }
         }
-        this_thread::sleep_for(milliseconds(10));
-    }
 
-#ifdef __unix__
-    setNonBlockingInput(false);
-#endif
-
-    if (monsterHP > 0)
-    {
-        cout << "\n======================" << endl;
-        cout << "FAILED！" << endl;
-        cout << "你未能在時間內擊敗怪物！" << endl;
-        cout << "總計點擊次數：" << totalClicks << " 次！" << endl;
-
-        if (hasRevive)
+        if (monsterHP > 0)
         {
-            cout << "你有一張免死金牌！請問你要使用嗎？（y/n）: ";
-            char lastChar = getLastInput();
+            cout << "\n======================" << endl;
+            cout << "FAILED！" << endl;
+            cout << "你未能在時間內擊敗怪物！" << endl;
+            cout << "總計點擊次數：" << totalClicks << " 次！" << endl;
 
-            if (lastChar == 'y' || lastChar == 'Y')
+            if (hasRevive)
             {
-                hasRevive = false;
-                cout << "免死金牌已被使用。" << endl;
-                playGame(hasRevive, monsterHP, totalClicks, roundClicks, currentVisibleLines, maxHP, false);
+                cout << "你有一張免死金牌！請問你要使用嗎？（y/n）: ";
+                char lastChar = getLastInput();
+
+                if (lastChar == 'y' || lastChar == 'Y')
+                {
+                    hasRevive = false;
+                    cout << "免死金牌已被使用。" << endl;
+                    playGame(); // 再次调用自己
+                }
+                else
+                {
+                    cout << "======================" << endl;
+                    cout << "GAME OVER！怪物未被擊敗，你沒有獲得任何金幣！" << endl;
+                }
             }
             else
             {
@@ -232,23 +165,13 @@ void click_game::playGame(bool &hasRevive, int &monsterHP, int &totalClicks, int
                 cout << "GAME OVER！怪物未被擊敗，你沒有獲得任何金幣！" << endl;
             }
         }
-        else
-        {
-            cout << "======================" << endl;
-            cout << "GAME OVER！怪物未被擊敗，你沒有獲得任何金幣！" << endl;
-        }
     }
-}
+};
 
 int main()
 {
-    srand(static_cast<unsigned int>(time(0)));
-    bool hasRevive = true;
-    int monsterHP = 30;
-    int totalClicks = 0;
-    int roundClicks = 0;
-    int currentVisibleLines;
-    playGame(hasRevive, monsterHP, totalClicks, roundClicks, currentVisibleLines, monsterHP, true);
+    click_game game;
+    game.playGame();
     return 0;
 }
 

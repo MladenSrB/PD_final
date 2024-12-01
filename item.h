@@ -1,7 +1,6 @@
 #include "redistributable.h"
 #include "character.h"
 using namespace std;
-// test
 
 class Item
 {

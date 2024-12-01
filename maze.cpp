@@ -3,6 +3,7 @@
 #include "item.h"
 #include "redLight.h"
 #include "dino_game.h"
+#include "click_game.h"
 #include "maze.h"
 using namespace std;
 

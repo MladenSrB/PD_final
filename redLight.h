@@ -4,5 +4,9 @@ const int FINISH_LINE_X = 70;   // 終點位置
 const int TIME_LIMIT = 10;      // 時間限制 (秒)
 const float BUFFER_TIME = 0.4;  // 紅燈緩衝時間
 
-void startGame();
-void setNonBlockingInput(bool enable);
+class redLight
+{
+public:
+    void startGame();
+    void setNonBlockingInput(bool enable);
+}

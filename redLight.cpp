@@ -1,16 +1,8 @@
 #include "redistributable.h"
 #include "redLight.h"
 
-class redLight
-{
-public:
-    void startGame()
-
-}
-
 // set terminal to non blocking mode
-void
-setNonBlockingInput(bool enable)
+void setNonBlockingInput(bool enable)
 {
     struct termios tty;
     tcgetattr(STDIN_FILENO, &tty);

@@ -5,13 +5,13 @@ using namespace chrono;
 
 class clickgame
 {
-    private:
-        //bool hasRevive = true;
-        int monsterHP = 30;
-        int totalClicks = 0;
-        int roundClicks = 0;
-        int currentVisibleLines;
-    public:
+private:
+    //bool hasRevive = true;
+    int monsterHP = 30;
+    int totalClicks = 0;
+    int roundClicks = 0;
+    int currentVisibleLines;
+public:
     void setNonBlockingInput(bool enable);
     bool isKeyPressed();
     char getKey();

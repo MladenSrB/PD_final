@@ -1,4 +1,8 @@
 #include "redistributable.h"
+#include "character.h"
+#include "item.h"
+#include "redLight.h"
+#include "dino_game.h"
 #include "maze.h"
 using namespace std;
 

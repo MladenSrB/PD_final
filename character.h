@@ -1,5 +1,4 @@
 #include "redistributable.h"
-#include "item.h"
 using namespace std;
 
 class Character

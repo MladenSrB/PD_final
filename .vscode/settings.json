@@ -4,7 +4,8 @@
     "vector": "cpp",
     "__threading_support": "cpp",
     "forward_list": "cpp",
-    "ostream": "cpp"
+    "ostream": "cpp",
+    "iostream": "cpp"
   },
   "C_Cpp_Runner.cCompilerPath": "clang",
   "C_Cpp_Runner.cppCompilerPath": "clang++",

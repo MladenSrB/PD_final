@@ -1,5 +1,5 @@
 
-#include <dino_game.h>
+#include "dino_game.h"
 
 void DinoGame::setNonBlockingInput() {
     termios term;

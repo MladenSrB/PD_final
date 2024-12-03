@@ -1,5 +1,8 @@
-
+#include "redistributable.h"
 #include "dino_game.h"
+#include "character.h"
+using namespace std;
+using namespace chrono;
 
 void DinoGame::setNonBlockingInput() {
     termios term;
@@ -89,7 +92,7 @@ void DinoGame::jump() {
     isJumping = false;
 }
 
-void DinoGame::runGame(Player player) {
+void DinoGame::runGame(Player &player) {
     char map[height][width];
     vector<int> obstacleX;
     int obstacleSpawnTimer = 0;

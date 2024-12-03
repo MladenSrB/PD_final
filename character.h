@@ -8,19 +8,19 @@ class Item; // 前向宣告
 
 class Character
 {
-protected:
-    string name; // 名字
-    int hp;      // 血條
-    int level;   // 等級
-    int atk;     // 攻擊力
+    protected:
+        string name; // 名字
+        int hp;      // 血條
+        int level;   // 等級
+        int atk;     // 攻擊力
 
-public:
-    Character(string name);
-    void attack(Character c, int atkpt);
-    void setatk(int baseATK) { atk = baseATK; };
-    int getatk() { return atk; };
-    void sethp(int newhp) { hp = newhp; };
-    int gethp() { return hp; };
+    public:
+        Character(string name);
+        void attack(Character c, int atkpt);
+        void setatk(int baseATK) { atk = baseATK; };
+        int getatk() { return atk; };
+        void sethp(int newhp) { hp = newhp; };
+        int gethp() { return hp; };
 };
 
 class Player : public Character
@@ -46,6 +46,13 @@ public:
     void decreaseHp(int blood){hp -= blood;};
     void addHp(int blood){hp += blood;};
     int getExp(){ return exp;};
+};
+
+class Monster : public Character
+{
+    public:
+        Monster(string name, int level);
+        int getLevel(){return level;};
 };
 
 #endif

@@ -2,7 +2,8 @@
 #include "character.h"
 #include "item.h"
 #include "redLight.h"
-//#include "dino_game.h"
+#include "dino_game.h"
+#include "clickgame.h"
 #include "maze.h"
 using namespace std;
 
@@ -75,8 +76,8 @@ void Game::placeHints(int hintCount) {
 
 // 顯示迷宮和玩家資訊
 void Game::displayMaze() {
-    cout << "   經驗: " << player.getexp()
-         << "   血量: " << player.gethp() << "\n\n";
+    //cout << "   經驗: " << player.getexp()
+      //   << "   血量: " << player.gethp() << "\n\n";
 
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
@@ -117,8 +118,20 @@ void Game::movePlayer(char move) {
 void Game::handleHint() {
     if (hints.count(make_pair(playerX, playerY)) > 0) {
         cout << "\n你觸發了提示點！準備挑戰紅綠燈遊戲！\n";
-        RedLightGame redLight(10, 100);
-        redLight.startGame();
+        int gameType = rand() % 3;
+        if (gameType == 0){
+            RedLightGame redLight(10, 100);
+            redLight.startGame();
+        }
+        else if (gameType == 1){
+            DinoGame dino;
+            dino.runGame(player);
+        }
+        else {
+            clickgame click;
+            click.playGame(player);
+        }
+        
         player.addExp(50);
         hints.erase(make_pair(playerX, playerY));
     }

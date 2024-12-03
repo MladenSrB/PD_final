@@ -1,3 +1,7 @@
+
+#ifndef DINOGAME
+#define DINOGAME
+
 #include "redistributable.h"
 #include "character.h"
 
@@ -27,7 +31,7 @@ public:
   void displayGame(char map[height][width], int score, int countdown);
   void updateMap(char map[height][width], vector<int> &obstacleX, int &score, int &obstacleSpawnTimer);
   void jump();
-  void runGame(Player player);
+  void runGame(Player &player);
 };
 
 static const int width = 50;
@@ -35,3 +39,5 @@ static const int height = 10;
 static const char ground = '_';
 static const char dinosaur = 'T';
 static const char obstacle = 'O';
+
+#endif

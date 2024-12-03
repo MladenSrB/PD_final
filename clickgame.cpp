@@ -1,4 +1,4 @@
-#include "click_game.h"
+#include "clickgame.h"
 #include "character.h"
 #include "item.h"
 
@@ -19,7 +19,7 @@ clickgame::clickgame()
         Monster monster(mname, 1);
         this->monsterHP = monster.gethp();
         this->monsterATK = monster.getatk();
-        this->monsterlv = monster.getlevel();
+        this->monsterlv = monster.getLevel();
     }
     else if (remainder == 1)
     {
@@ -27,7 +27,7 @@ clickgame::clickgame()
         Monster monster(mname, 2);
         this->monsterHP = monster.gethp();
         this->monsterATK = monster.getatk();
-        this->monsterlv = monster.getlevel();
+        this->monsterlv = monster.getLevel();
     }
     else
     {
@@ -35,7 +35,7 @@ clickgame::clickgame()
         Monster monster(mname, 3);
         this->monsterHP = monster.gethp();
         this->monsterATK = monster.getatk();
-        this->monsterlv = monster.getlevel();
+        this->monsterlv = monster.getLevel();
     }
 }
 
@@ -106,7 +106,7 @@ void clickgame::printMonster(int visibleLines)
     cout << endl;
 }
 
-void clickgame::playGame(Player name)
+void clickgame::playGame(Player &name)
 {
     int maxHP = monsterHP;
     const int durationInSeconds = 10;
@@ -291,8 +291,7 @@ void clickgame::playGame(Player name)
         }
     }
 }
-
-int main()
+/*int main()
 {
     clickgame game;
     // 初始化玩家名稱
@@ -302,5 +301,6 @@ int main()
     // 開始遊戲
     game.playGame(player);
     return 0;
-}
+}*/
+
 

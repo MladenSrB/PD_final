@@ -1,4 +1,8 @@
+#ifndef CLICKGAME
+#define CLICKGAME
+
 #include "redistributable.h"
+#include "character.h"
 
 using namespace std;
 using namespace chrono;
@@ -22,5 +26,7 @@ public:
     void clearScreen();
     char getLastInput();
     void printMonster(int visibleLines);
-    void playGame(Player name);
+    void playGame(Player &name);
 };
+
+#endif

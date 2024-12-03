@@ -124,5 +124,16 @@ void RedLightGame::startGame()
         std::cout << "You've lost " << lostHP << " pts of HP!" << '\n';
     }
 
+    std::cout << "Press \"Enter\" to continue\r" << endl;
+    std::cout.flush();
     setNonBlockingInput(false); // 恢復終端默認模式
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    for (int sec = 3; sec > 0; sec--)
+    {
+        std::cout << "Returning to maze in " << sec << " seconds\r";
+        std::cout.flush();
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::cout << "                                         \r";
+        std::cout.flush();
+    }
 }

@@ -6,6 +6,7 @@
 // ver. 03.2001 : added Merchant class
 
 #include "character.h"
+#include "item.h"
 
 using namespace std;
 

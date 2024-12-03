@@ -9,7 +9,6 @@
 #define ITEM_H
 
 #include "redistributable.h"
-#include "character.h"
 
 using namespace std;
 
@@ -22,13 +21,9 @@ protected:
     string itemName;
 
 public:
-    virtual void useItem() {};
+    virtual void useItem();
     Item(string aItemType, string aItemName);
-    virtual void print()
-    {
-        cout << "Invoked print() of Item. Please invoke child class's print function.";
-        exit(1);
-    };
+    virtual void print();
 };
 
 class Potion : public Item
@@ -51,9 +46,9 @@ protected:
     const int baseATK = -1;
 
 public:
-    Weapon(string weaponName, int damage) : Item("Weapon", weaponName), baseATK(damage) {};
+    Weapon(string weaponName, int damage);
     void useWeapon(Character &aChar);
-    void print() { cout << itemName << "ATK: " << baseATK; }
+    void print();
 };
 
 class AttackPotion : public Potion
@@ -64,8 +59,8 @@ private:
 public:
     AttackPotion(int strength) : Potion("Attack Potion", "攻擊藥水"), potionStrength(strength) {};
     ~AttackPotion() {};
-    void useItem(Character &aChar) { aChar.setatk(potionStrength + aChar.getatk()); }
-    void print() { cout << itemName << "Strength: " << potionStrength; }
+    void useItem(Character &aChar);
+    void print();
 };
 
 class HealthPotion : public Potion
@@ -76,15 +71,15 @@ private:
 public:
     HealthPotion(int strength) : Potion("Health Potion", "生命藥水"), potionStrength(strength) {};
     ~HealthPotion() {};
-    void useItem(Character &aChar) { aChar.sethp(potionStrength + aChar.gethp()); }
-    void print() { cout << itemName << "Strength: " << potionStrength; }
+    void useItem(Character &aChar);
+    void print();
 };
 
 class Shield : public Item
 {
 public:
     Shield(string shieldName) : Item("Shield", shieldName) {};
-    void print() { cout << itemName; }
+    void print();
 };
 
 #endif

@@ -119,8 +119,10 @@ void Game::handleHint() {
             redLight.startGame();
         }
         else if (gameType == 1){
-            DinoGame dino;
-            dino.runGame(player);
+            RedLightGame redLight(10, 100);
+            redLight.startGame();
+            /*DinoGame dino;
+            dino.runGame(player);*/
         }
         else {
             /*clickgame click;

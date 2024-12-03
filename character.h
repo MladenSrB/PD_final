@@ -48,4 +48,12 @@ public:
     int getExp(){ return exp;};
 };
 
+
+class Monster : public Character
+{
+public:
+    Monster(string name, int level);
+};
+
+
 #endif

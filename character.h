@@ -1,4 +1,10 @@
-/* Version: 03.1846 */
+/* Version: 03.2001 */
+
+/* CHANGE LOG */
+
+// ver. 03.1846 : cleaned up included headers and libraries
+// ver. 03.2001 : added Merchant class
+
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
@@ -54,9 +60,22 @@ public:
 
 class Monster : public Character
 {
-    public:
-        Monster(string name, int level);
-        int getLevel(){return level;};
+public:
+    Monster(string name, int level);
+    int getLevel(){return level;};
 };
+
+class Merchant : public Character{
+private:
+const int goodsCnt = 4; // 商店的商品數量
+Item** goods; //商店中陳列的物品陣列
+
+public:
+    Merchant(); //constructor
+    ~Merchant();
+    //Item addGood();
+    Item sellGood(int itemIndex, const std::string& itemType);
+    void printAllGoods(const int itemIndex);
+}
 
 #endif

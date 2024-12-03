@@ -1,4 +1,5 @@
 #include "redistributable.h"
+#include "character.h"
 
 using namespace std;
 using namespace chrono;

@@ -39,16 +39,13 @@ public:
     void upgrade();
     void addItem(Item i);
     bool usedItem(Item i);
+    void addCoin(int c){coin += c;};
+    int getCoin(){return coin;};
+
     void addExp(int pt);
-    int getexp() { return exp; };
-    int getcoin() { return coin; };
-
-};
-
-class Monster : public Character
-{
-public:
-    Monster(string name, int level);
+    void decreaseHp(int blood){hp -= blood;};
+    void addHp(int blood){hp += blood;};
+    int getExp(){ return exp;};
 };
 
 #endif

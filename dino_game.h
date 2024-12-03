@@ -23,10 +23,10 @@ public:
 
   void setNonBlockingInput();
   void resetInput();
-  void displayGame(char map[height][width], int score);
+  void displayGame(char map[height][width], int score, int countdown);
   void updateMap(char map[height][width], vector<int> &obstacleX, int &score, int &obstacleSpawnTimer);
   void jump();
-  void runGame();
+  void runGame(Player player);
 };
 
 static const int width = 50;

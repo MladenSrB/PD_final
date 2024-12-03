@@ -1,5 +1,5 @@
+/* Version: 03.2001 */
 #include "item.h"
-#include "redistributable.h"
 using namespace std;
 
 

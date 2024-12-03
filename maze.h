@@ -1,9 +1,13 @@
+/* Version: 03.2001 */
 #ifndef MAZE_H
 #define MAZE_H
 
 #include "redistributable.h"
 #include "character.h"
 #include "redLight.h"
+#include "item.h"
+#include "dino_game.h"
+#include "clickgame.h"
 
 char getch(); // 非阻塞鍵盤輸入
 

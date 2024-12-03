@@ -1,3 +1,4 @@
+/* Version: 03.2001 */
 #ifndef REDISTRIBUTABLE_H
 #define REDISTRIBUTABLE_H
 

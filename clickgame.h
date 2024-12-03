@@ -1,8 +1,10 @@
+/* Version: 03.2001 */
 #ifndef CLICKGAME
 #define CLICKGAME
 
 #include "redistributable.h"
 #include "character.h"
+#include "item.h"
 
 using namespace std;
 using namespace chrono;

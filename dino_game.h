@@ -1,4 +1,4 @@
-
+/* Version: 03.2001 */
 #ifndef DINOGAME
 #define DINOGAME
 

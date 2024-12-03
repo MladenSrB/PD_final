@@ -36,7 +36,7 @@ Game::Game(Player &p) : SIZE(21), maze(SIZE, vector<int>(SIZE, 0)), playerX(1), 
         maze[i][0] = maze[i][SIZE - 1] = 0;
     }
     // 隨機放置提示標示
-    placeHints(5); // 放置 5 個提示標示
+    placeHints(10); // 放置 5 個提示標示
 }
 
 // 生成迷宮的深度優選搜尋法
@@ -128,8 +128,10 @@ void Game::handleHint() {
             dino.runGame(player);
         }
         else {
-            clickgame click;
-            click.playGame(player);
+            /*clickgame click;
+            click.playGame(player);*/
+            RedLightGame redLight(10, 100);
+            redLight.startGame();
         }
         
         player.addExp(50);

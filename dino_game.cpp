@@ -154,11 +154,11 @@ const char DinoGame::ground = '_';
 const char DinoGame::dinosaur = 'T';
 const char DinoGame::obstacle = 'O';
 
-// 單獨實行可以用
-// int main() {
-//     string name = "ppp";
-//     Player player(name);
-//     DinoGame game;
-//     game.runGame(player);
-//     return 0;
-// }
+ //單獨實行可以用
+int main() {
+    string name = "ppp";
+    Player player(name);
+    DinoGame game;
+    game.runGame(player);
+    return 0;
+ }

@@ -1,9 +1,4 @@
-#include "redistributable.h"
-#include "character.h"
-#include "item.h"
-#include "redLight.h"
-#include "dino_game.h"
-#include "clickgame.h"
+/* Version: 03.1846 */
 #include "maze.h"
 using namespace std;
 

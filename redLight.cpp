@@ -1,4 +1,4 @@
-#include "redistributable.h"
+/* Version: 03.1846 */
 #include "redLight.h"
 using namespace std;
 

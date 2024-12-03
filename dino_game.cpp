@@ -1,6 +1,6 @@
-#include "redistributable.h"
+/* Version: 03.1846 */
 #include "dino_game.h"
-#include "character.h"
+
 using namespace std;
 using namespace chrono;
 

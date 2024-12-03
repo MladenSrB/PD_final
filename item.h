@@ -1,8 +1,10 @@
+/* Version: 03.1846 */
 #ifndef ITEM_H
 #define ITEM_H
 
 #include "redistributable.h"
 #include "character.h"
+
 using namespace std;
 
 class Character;

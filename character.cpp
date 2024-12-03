@@ -1,6 +1,5 @@
-#include "redistributable.h"
+/* Version: 03.1846 */
 #include "character.h"
-#include "item.h"
 
 using namespace std;
 

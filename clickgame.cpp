@@ -1,6 +1,5 @@
+/* Version: 03.1846 */
 #include "clickgame.h"
-#include "character.h"
-#include "item.h"
 
 using namespace std;
 using namespace chrono;

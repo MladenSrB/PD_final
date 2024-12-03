@@ -1,7 +1,11 @@
+/* Version: 03.1846 */
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
 #include "redistributable.h"
+#include "character.h"
+#include "item.h"
+
 using namespace std;
 
 class Item; // 前向宣告

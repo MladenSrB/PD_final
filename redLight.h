@@ -1,5 +1,8 @@
+/* Version: 03.1846 */
 #ifndef REDLIGHT
 #define REDLIGHT
+
+#include "redistributable.h"
 
 const int WINDOW_WIDTH = 80;    // 終端寬度 (用於顯示遊戲)
 const int PLAYER_START_POS = 1; // 玩家起始位置
@@ -20,3 +23,5 @@ public:
 };
 
 #endif
+
+

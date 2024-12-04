@@ -1,4 +1,4 @@
-/* Version: 04.1435 */
+/* Version: 04.1517 */
 #include "maze.h"
 using namespace std;
 
@@ -147,7 +147,8 @@ void Game::handleHint()
 {
     if (hints.count(make_pair(playerX, playerY)) > 0)
     {
-        cout << "\n你觸發了提示點！準備挑戰紅綠燈遊戲！\n";
+        cout << "\n你觸發了提示點！準備挑戰小遊戲！\n";
+        std::this_thread::sleep_for(std::chrono::seconds(2));
         int gameType = rand() % 3;
         if (gameType == 0)
         {
@@ -161,8 +162,8 @@ void Game::handleHint()
         }
         else
         {
-            RedLightGame redLight(10, 100);
-            redLight.startGame();
+            DinoGame dinoGame;
+            dinoGame.startGame(player);
         }
 
         player.addExp(50);

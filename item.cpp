@@ -1,4 +1,4 @@
-/* Version: 04.1435 */
+/* Version: 04.1517 */
 #include "item.h"
 #include "character.h"
 using namespace std;

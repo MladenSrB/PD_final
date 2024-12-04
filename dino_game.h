@@ -1,4 +1,4 @@
-/* Version: 04.1435 */
+/* Version: 04.1517 */
 #ifndef DINOGAME
 #define DINOGAME
 
@@ -13,9 +13,9 @@ class DinoGame
 protected:
   static const int width = 50;
   static const int height = 10;
-  static const char ground;
-  static const char dinosaur;
-  static const char obstacle;
+  static const char ground = '_';
+  static const char dinosaur = 'T';
+  static const char obstacle = 'O';
 
   int dinoY;
   bool isJumping;
@@ -29,13 +29,7 @@ public:
   void displayGame(char map[height][width], int score, int countdown);
   void updateMap(char map[height][width], vector<int> &obstacleX, int &score, int &obstacleSpawnTimer);
   void jump();
-  void runGame(Player &player);
+  void startGame(Player &player);
 };
-
-static const int width = 50;
-static const int height = 10;
-static const char ground = '_';
-static const char dinosaur = 'T';
-static const char obstacle = 'O';
 
 #endif

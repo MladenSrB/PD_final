@@ -1,4 +1,4 @@
-/* Version: 04.1435 */
+/* Version: 04.1517 */
 #include "dino_game.h"
 
 using namespace std;
@@ -47,7 +47,7 @@ void DinoGame::updateMap(char map[height][width], vector<int> &obstacleX, int &s
     }
 
     // 畫地面
-    fill(map[height - 1], map[height - 1] + width, ground);
+    fill(map[height - 1], map[height - 1] + width, '_');
 
     // 畫恐龍
     map[dinoY][1] = dinosaur;
@@ -113,7 +113,7 @@ void DinoGame::jump()
     isJumping = false;
 }
 
-void DinoGame::runGame(Player &player)
+void DinoGame::startGame(Player &player)
 {
     char map[height][width];
     vector<int> obstacleX;
@@ -173,21 +173,15 @@ void DinoGame::runGame(Player &player)
         cout << "coin +" << coin << ", total coin: " << player.getCoin() << endl;
         cout << "exp +" << exp << ", total exp: " << player.getExp() << endl;
         cout << "hp -" << blood << ", total hp: " << player.gethp() << endl;
+        for (int sec = 1; sec > 0; sec--)
+        {
+            std::cout << "Returning to maze in " << sec << " seconds...\r";
+            std::cout.flush();
+            std::this_thread::sleep_for(std::chrono::seconds(2));
+            std::cout << "                                         \r";
+            std::cout.flush();
+        }
     }
-
-    resetInput();
 }
-
-const char DinoGame::ground = '_';
-const char DinoGame::dinosaur = 'T';
-const char DinoGame::obstacle = 'O';
 
 // 單獨實行可以用
-int main()
-{
-    string name = "ppp";
-    Player player(name);
-    DinoGame game;
-    game.runGame(player);
-    return 0;
-}

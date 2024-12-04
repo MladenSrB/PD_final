@@ -40,7 +40,7 @@ Game::Game(Player &p) : SIZE(21), maze(SIZE, vector<int>(SIZE, 0)), playerX(1), 
         maze[i][0] = maze[i][SIZE - 1] = 0;
     }
     // 隨機放置提示標示
-    placeHints(10); // 放置 5 個提示標示
+    placeHints();
 }
 
 // 生成迷宮的深度優選搜尋法
@@ -72,49 +72,96 @@ void Game::generateMaze(int x, int y)
 }
 
 // 隨機放置提示標示
-void Game::placeHints(int hintCount)
+void Game::placeHints()
 {
-    while (hints.size() < hintCount)
+    // 放置商人 (2 個)
+    for (int i = 0; i < 2; i++)
     {
-        int x = rand() % (SIZE - 2) + 1;
-        int y = rand() % (SIZE - 2) + 1;
-        if (maze[x][y] == 1 && (x != playerX || y != playerY))
+        while (true)
         {
-            hints.insert(make_pair(x, y)); // 使用 std::make_pair
+            int x = rand() % (SIZE - 2) + 1;
+            int y = rand() % (SIZE - 2) + 1;
+            if (maze[x][y] == 1 && hints.find({x, y}) == hints.end() && (x != playerX || y != playerY))
+            {
+                hints[make_pair(x, y)] = HINT_SHOP; // 商人
+                break;
+            }
+        }
+    }
+
+    // 放置金幣 (1~10 個)
+    int coinCount = rand() % 10 + 1;
+    for (int i = 0; i < coinCount; i++)
+    {
+        while (true)
+        {
+            int x = rand() % (SIZE - 2) + 1;
+            int y = rand() % (SIZE - 2) + 1;
+            if (maze[x][y] == 1 && hints.find({x, y}) == hints.end() && (x != playerX || y != playerY))
+            {
+                hints[make_pair(x, y)] = HINT_COIN; // 金幣
+                break;
+            }
+        }
+    }
+
+    // 放置地雷 (10 個)
+    for (int i = 0; i < 10; i++)
+    {
+        while (true)
+        {
+            int x = rand() % (SIZE - 2) + 1;
+            int y = rand() % (SIZE - 2) + 1;
+            if (maze[x][y] == 1 && hints.find({x, y}) == hints.end() && (x != playerX || y != playerY))
+            {
+                hints[make_pair(x, y)] = HINT_MINE; // 地雷
+                break;
+            }
         }
     }
 }
 
+
 // 顯示迷宮和玩家資訊
 void Game::displayMaze()
 {
-    // cout << "   經驗: " << player.getexp()
-    //    << "   血量: " << player.gethp() << "\n\n";
-
     for (int i = 0; i < SIZE; ++i)
     {
         for (int j = 0; j < SIZE; ++j)
         {
             if (i == playerX && j == playerY)
             {
-                cout << "P ";
+                cout << "P "; // 玩家位置
             }
-            else if (hints.count(make_pair(i, j)) > 0)
+            else if (hints.find({i, j}) != hints.end())
             {
-                cout << "! ";
+                // 根據提示類型顯示不同符號
+                switch (hints[{i, j}])
+                {
+                case HINT_SHOP:
+                    cout << "S "; // 商人
+                    break;
+                case HINT_COIN:
+                    cout << "$ "; // 金幣
+                    break;
+                case HINT_MINE:
+                    cout << "* "; // 地雷
+                    break;
+                }
             }
             else if (maze[i][j] == 1)
             {
-                cout << "  ";
+                cout << "  "; // 通道
             }
             else
             {
-                cout << "██";
+                cout << "██"; // 牆壁
             }
         }
         cout << "\n";
     }
 }
+
 
 // 玩家移動控制
 void Game::movePlayer(char move)
@@ -145,29 +192,54 @@ void Game::movePlayer(char move)
 // 處理提示事件
 void Game::handleHint()
 {
-    if (hints.count(make_pair(playerX, playerY)) > 0)
+    if (hints.count({playerX, playerY}) > 0)
     {
-        cout << "\n你觸發了提示點！準備挑戰小遊戲！\n";
-        std::this_thread::sleep_for(std::chrono::seconds(2));
-        int gameType = rand() % 3;
-        if (gameType == 0)
+        HintType type = hints[{playerX, playerY}];
+        switch (type)
         {
-            RedLightGame redLight(10, 100);
-            redLight.startGame();
-        }
-        else if (gameType == 1)
-        {
-            Clickgame clickGame;
-            clickGame.startGame(player);
-        }
-        else
-        {
-            DinoGame dinoGame;
-            dinoGame.startGame(player);
+        case HINT_SHOP:
+            cout << "\n你遇到了商人！可以購買道具！\n";
+            // 這裡可以加入商店互動邏輯
+            break;
+        case HINT_COIN:
+            cout << "\n你拾取了一些金幣！\n";
+            player.addCoin(10); // 增加金幣數量
+            cout << "當前金幣數量：" << player.getCoin() << endl;
+            break;
+        case HINT_MINE:
+            cout << "\n看！前方出現一個神秘入口，進入看看會有驚喜在等你呦！\n";
+            std::this_thread::sleep_for(std::chrono::seconds(2));
+            int gameType = rand() % 3;
+            if (gameType == 0)
+            {
+                //DinoGame dinoGame;
+                //dinoGame.startGame(player);
+                RedLightGame redLight(10, 100);
+                redLight.startGame();
+            }
+            else if (gameType == 1)
+            {
+                //DinoGame dinoGame;
+                //dinoGame.startGame(player);
+                
+                Clickgame clickGame;
+                clickGame.startGame(player);
+            }
+            else
+            {
+                RedLightGame redLight(10, 100);
+                redLight.startGame();
+                //DinoGame dinoGame;
+                //dinoGame.startGame(player);
+            }
+            player.addExp(50);
+            break;
         }
 
-        player.addExp(50);
-        hints.erase(make_pair(playerX, playerY));
+        // 移除已觸發的提示
+        hints.erase({playerX, playerY});
+
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 }
 

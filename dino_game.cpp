@@ -173,15 +173,24 @@ void DinoGame::startGame(Player &player)
         cout << "coin +" << coin << ", total coin: " << player.getCoin() << endl;
         cout << "exp +" << exp << ", total exp: " << player.getExp() << endl;
         cout << "hp -" << blood << ", total hp: " << player.gethp() << endl;
-        for (int sec = 1; sec > 0; sec--)
+        /*for (int sec = 1; sec > 0; sec--)
         {
             std::cout << "Returning to maze in " << sec << " seconds...\r";
             std::cout.flush();
             std::this_thread::sleep_for(std::chrono::seconds(2));
             std::cout << "                                         \r";
             std::cout.flush();
-        }
+        }*/
     }
-}
+    // 提示返回迷宮
+    cout << "Returning to the maze. Press Enter to continue..." << endl;
+    cin.ignore();
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-// 單獨實行可以用
+    // 恢復終端輸入模式
+    resetInput();
+
+    // 重置遊戲狀態
+    gameOver = false;
+    isJumping = false;
+}

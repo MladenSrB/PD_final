@@ -11,12 +11,19 @@
 
 char getch(); // 非阻塞鍵盤輸入
 
+enum HintType
+{
+    HINT_SHOP,    // 商人
+    HINT_COIN,    // 金幣
+    HINT_MINE     // 地雷
+};
+
 class Game
 {
 private:
     const int SIZE;
     vector<vector<int>> maze;
-    set<pair<int, int>> hints;
+    map<pair<int, int>, HintType> hints;
     int playerX, playerY;
 
     int dx[4]; // 移動方向
@@ -26,7 +33,7 @@ private:
 public:
     Game(Player &p); // 傳入 Player 參考
     void generateMaze(int x, int y);
-    void placeHints(int hintCount);
+    void placeHints();
     void displayMaze();
     void movePlayer(char move);
     void handleHint();

@@ -30,6 +30,7 @@ public:
     int getatk() { return atk; };
     void sethp(int newhp) { hp = newhp; };
     int gethp() { return hp; };
+    int getlevel() { return level; };
 };
 
 class Player : public Character
@@ -52,9 +53,10 @@ public:
     int getCoin() { return coin; };
 
     void addExp(int pt);
+    int getExp() { return exp; };
     void decreaseHp(int blood) { hp -= blood; };
     void addHp(int blood) { hp += blood; };
-    int getExp() { return exp; };
+    
 };
 
 class Monster : public Character
@@ -75,7 +77,7 @@ public:
     ~Merchant();
     // Item addGood();
     Item *sellGood(int itemIndex);
-    void printAllGoods(const int itemIndex);
+    void printAllGoods();
 };
 
 #endif

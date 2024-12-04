@@ -97,14 +97,14 @@ Item *Merchant::sellGood(int itemIndex)
     Item *temp = goods[itemIndex];
     goods[itemIndex] = nullptr;
 
-    return temp;
+    return temp; // 回傳購買種類，暫且還沒列出（待修）
 }
 
-void Merchant::printAllGoods(const int itemIndex)
+void Merchant::printAllGoods()
 {
     for (int i = 0; i < goodsCnt; i++)
     {
-        cout << "[" << itemIndex << "] ";
+        cout << "[" << i << "] ";
         goods[i]->print();
         cout << '\n';
     }

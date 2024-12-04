@@ -75,7 +75,7 @@ void Game::generateMaze(int x, int y)
 void Game::placeHints()
 {
     // 放置商人 (2 個)
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 10; i++)
     {
         while (true)
         {
@@ -106,7 +106,7 @@ void Game::placeHints()
     }
 
     // 放置地雷 (10 個)
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 2; i++)
     {
         while (true)
         {
@@ -125,6 +125,13 @@ void Game::placeHints()
 // 顯示迷宮和玩家資訊
 void Game::displayMaze()
 {
+    cout << "Level: " << player.getlevel() << " | EXP: " << player.getExp() << " | HP: " << player.gethp()
+         << " | ATK: " << player.getatk() << " | Coin: " << player.getCoin() << "\n\n";
+    
+    cout << "Backpack: ";
+    //player.printBackpack(); // 確保在 Player 類別中實現該方法
+    cout << endl;
+
     for (int i = 0; i < SIZE; ++i)
     {
         for (int j = 0; j < SIZE; ++j)
@@ -187,6 +194,7 @@ void Game::movePlayer(char move)
 
     playerX = newX;
     playerY = newY;
+    player.decreaseHp(1);
 }
 
 // 處理提示事件
@@ -194,17 +202,37 @@ void Game::handleHint()
 {
     if (hints.count({playerX, playerY}) > 0)
     {
+        Merchant *merchant = nullptr;
+        int coinAmount = rand() % 50 + 1;
+        
         HintType type = hints[{playerX, playerY}];
         switch (type)
         {
         case HINT_SHOP:
-            cout << "\n你遇到了商人！可以購買道具！\n";
-            // 這裡可以加入商店互動邏輯
+            merchant = new Merchant();
+            cout << "\n你遇到了一位商人！以下是他的商品：\n";
+            merchant->printAllGoods();
+            cout << "[4] key\n\n輸入商品編號購買，或輸入 -1 離開：";
+            int choice;
+            cin >> choice;
+            if (choice >= 0 && choice < 4)
+            {
+                Item *purchasedItem = merchant->sellGood(choice);
+                cout << "購買成功！\n";
+                //player.addItem(choice);
+                /*cout << "You purchased: ";
+                purchasedItem->print();*/
+            }
+            else if (choice == 4) {
+                cout << "購買成功！\n";
+            }
+            else {
+                cout << "\n輸出無效，商人生氣跑走了\n";
+            }
             break;
         case HINT_COIN:
-            cout << "\n你拾取了一些金幣！\n";
-            player.addCoin(10); // 增加金幣數量
-            cout << "當前金幣數量：" << player.getCoin() << endl;
+            player.addCoin(coinAmount);
+            cout << "\n哎呦真幸運，恭喜獲得 " << coinAmount << " 金幣！\n";
             break;
         case HINT_MINE:
             cout << "\n看！前方出現一個神秘入口，進入看看會有驚喜在等你呦！\n";

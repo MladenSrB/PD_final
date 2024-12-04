@@ -1,21 +1,22 @@
-/* Version: 03.2001 */
+/* Version: 04.1435 */
 #ifndef MAZE_H
 #define MAZE_H
 
 #include "redistributable.h"
+#include "item.h"
 #include "character.h"
 #include "redLight.h"
-#include "item.h"
 #include "dino_game.h"
 #include "clickgame.h"
 
 char getch(); // 非阻塞鍵盤輸入
 
-class Game {
+class Game
+{
 private:
     const int SIZE;
-    vector<vector<int> > maze;
-    set<pair<int, int> > hints;
+    vector<vector<int>> maze;
+    set<pair<int, int>> hints;
     int playerX, playerY;
 
     int dx[4]; // 移動方向

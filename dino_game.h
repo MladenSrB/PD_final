@@ -1,4 +1,4 @@
-/* Version: 03.2001 */
+/* Version: 04.1435 */
 #ifndef DINOGAME
 #define DINOGAME
 
@@ -7,8 +7,6 @@
 
 using namespace std;
 using namespace chrono;
-
-
 
 class DinoGame
 {

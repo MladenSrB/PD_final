@@ -1,4 +1,4 @@
-/* Version: 03.2001 */
+/* Version: 04.1435 */
 #ifndef CLICKGAME
 #define CLICKGAME
 
@@ -9,7 +9,7 @@
 using namespace std;
 using namespace chrono;
 
-class clickgame
+class Clickgame
 {
 private:
     int monsterHP;
@@ -18,17 +18,17 @@ private:
     int currentVisibleLines;
     int monsterATK;
     int monsterlv;
-    vector<string> monster; // 怪物圖案
+    vector<string> monsterAppearance; // 怪物圖案
 
 public:
-    clickgame();
+    Clickgame();
     void setNonBlockingInput(bool enable);
     bool isKeyPressed();
     char getKey();
     void clearScreen();
     char getLastInput();
     void printMonster(int visibleLines);
-    void playGame(Player &name);
+    void startGame(Player &name);
 };
 
 #endif

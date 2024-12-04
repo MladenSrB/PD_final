@@ -1,4 +1,4 @@
-/* Version: 03.2001 */
+/* Version: 04.1435 */
 #include "redLight.h"
 using namespace std;
 
@@ -128,9 +128,9 @@ void RedLightGame::startGame()
     std::cout.flush();
     setNonBlockingInput(false); // 恢復終端默認模式
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    for (int sec = 3; sec > 0; sec--)
+    for (int sec = 1; sec > 0; sec--)
     {
-        std::cout << "Returning to maze in " << sec << " seconds\r";
+        std::cout << "Returning to maze in " << sec << " seconds...\r";
         std::cout.flush();
         std::this_thread::sleep_for(std::chrono::seconds(1));
         std::cout << "                                         \r";

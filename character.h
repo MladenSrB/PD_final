@@ -37,7 +37,8 @@ class Player : public Character
 {
 private:
     Item **backpack;
-    int backpack_limit;
+    int backpackLimit;
+    int backpackCount;
     int exp;
     int x;
     int y;
@@ -46,12 +47,19 @@ private:
 
 public:
     Player(string name);
+    ~Player();
     void upgrade();
-    void addItem(Item i);
-    bool usedItem(Item i);
+    
+    bool boughtItem(Item *item);
+    bool usedItem(int itemIndex);
+    void printBackpack();
+    int getBackpackLimit() { return backpackLimit; };
+    int getBackpackCount() { return backpackCount; };
+    
     void addCoin(int c) { coin += c; };
     int getCoin() { return coin; };
-
+    void decreaseCoin(int c) { coin -= c; };
+ 
     void addExp(int pt);
     int getExp() { return exp; };
     void decreaseHp(int blood) { hp -= blood; };

@@ -128,8 +128,7 @@ void Game::displayMaze()
     cout << "Level: " << player.getlevel() << " | EXP: " << player.getExp() << " | HP: " << player.gethp()
          << " | ATK: " << player.getatk() << " | Coin: " << player.getCoin() << "\n\n";
     
-    cout << "Backpack: ";
-    //player.printBackpack(); // 確保在 Player 類別中實現該方法
+    player.printBackpack();
     cout << endl;
 
     for (int i = 0; i < SIZE; ++i)
@@ -212,21 +211,22 @@ void Game::handleHint()
             merchant = new Merchant();
             cout << "\n你遇到了一位商人！以下是他的商品：\n";
             merchant->printAllGoods();
-            cout << "[4] key\n\n輸入商品編號購買，或輸入 -1 離開：";
-            int choice;
-            cin >> choice;
-            if (choice >= 0 && choice < 4)
+            cout << "[4] key: $ 50\n\n輸入商品編號購買，或輸入 -1 離開：";
+            int purchaseIndex;
+            cin >> purchaseIndex;
+            if (purchaseIndex >= 0 && purchaseIndex < 4)
             {
-                Item *purchasedItem = merchant->sellGood(choice);
-                cout << "購買成功！\n";
-                //player.addItem(choice);
-                /*cout << "You purchased: ";
-                purchasedItem->print();*/
+                Item *purchasedItem = merchant->sellGood(purchaseIndex);
+                player.boughtItem(purchasedItem);
             }
-            else if (choice == 4) {
-                cout << "購買成功！\n";
+            else if (purchaseIndex == 4) {
+                if (player.getCoin() >= 50) {
+                    player.decreaseCoin(50);
+                    cout << "購買成功！\n";
+                }
+                else { cout << "餘額不足\n"; }
             }
-            else {
+            else { // 輸入非數字會卡bug
                 cout << "\n輸出無效，商人生氣跑走了\n";
             }
             break;
@@ -288,6 +288,21 @@ void Game::start()
         // 處理提示事件
         handleHint();
 
+        /*if (palyer.gethp <= 0) {
+            system("clear");
+            cout << "生命已到盡頭，是否使用藥水恢復？\n";
+            cout << "請輸入y or n\n";
+            char continued;
+            cin >> continued;
+            if (continued == "y") {
+                player.usedItem;
+                displayMaze();
+            }
+            else {
+                cout << "game over\n";
+            }
+
+        }*/
         // 檢查玩家是否到達終點
         if (playerX == SIZE - 2 && playerY == SIZE - 2)
         {

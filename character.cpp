@@ -27,26 +27,72 @@ Player::Player(string name) : Character(name)
 {
     coin = 0;
     exp = 0;
-    backpack_limit = 3;
-    backpack = new Item *[backpack_limit];
+    backpackLimit = 3;
+    backpackCount = 0;
+    backpack = new Item *[backpackLimit];
+}
+
+Player::~Player()
+{
+    for (int i = 0; i < backpackCount; ++i)
+    {
+        delete backpack[i];
+    }
+    delete[] backpack;
 }
 
 void Player::upgrade()
 {
     level++;
     atk += 5;
-    backpack_limit++;
-    Item **copyBackpack = new Item *[backpack_limit];
-    for (int i = 0; i < backpack_limit - 1; ++i)
+    backpackLimit++;
+    Item **newBackpack = new Item *[backpackLimit];
+
+    for (int i = 0; i < backpackCount; ++i)
     {
-        copyBackpack[i] = backpack[i];
-    }
-    for (int i = 0; i < backpack_limit - 1; ++i)
-    {
-        delete backpack[i];
+        newBackpack[i] = backpack[i];
     }
     delete[] backpack;
-    backpack = copyBackpack;
+    backpack = newBackpack;
+}
+
+bool Player::boughtItem(Item *item)
+{
+    if (backpackCount >= backpackLimit) {
+        cout << "已額滿\n";
+        return false;
+    }
+
+    int itemPrice = item->getPrice();
+    if (getCoin() < itemPrice) {
+        cout << "餘額不足\n";
+        return false;
+    }
+    else {
+        decreaseCoin(itemPrice);
+        cout << "購買成功！\n";
+    }
+
+    backpack[backpackCount++] = item;
+    return true;
+}
+bool Player::usedItem(int itemIndex)
+{
+
+}
+
+void Player::printBackpack()
+{
+    
+    if (backpackCount == 0) { cout << "暫無內容\n"; }
+    else {
+        cout << "背包內容如下\n";
+        for (int i = 0; i < backpackCount; i++) {
+            cout << "[" << i << "] ";
+            backpack[i]->print();
+            cout << '\n';
+        }
+    }
 }
 
 void Player::addExp(int pt)
@@ -76,10 +122,10 @@ Merchant::Merchant() : Character("Merchant")
     goods = new Item *[goodsCnt];
 
     srand(time(NULL));
-    goods[0] = new HealthPotion(rand() % (15 - 5 + 1) + 5); // strength of the poisons are randomly assigned within 5~15
-    goods[1] = new AttackPotion(rand() % (15 - 5 + 1) + 5);
-    goods[2] = new Weapon("Weapon", rand() % (10 - 1 + 1) + 1); // 產生ATK 1~10的武器
-    goods[3] = new Shield("Shield");
+    goods[0] = new HealthPotion(rand() % (15 - 5 + 1) + 5, 15); // strength of the poisons are randomly assigned within 5~15
+    goods[1] = new AttackPotion(rand() % (15 - 5 + 1) + 5, 5);
+    goods[2] = new Weapon(rand() % (10 - 1 + 1) + 1, 10); // 產生ATK 1~10的武器
+    goods[3] = new Shield("Shield", 20);
 }
 
 Merchant::~Merchant()
@@ -88,16 +134,14 @@ Merchant::~Merchant()
     {
         delete goods[i];
     }
-
     delete[] goods;
 }
 
 Item *Merchant::sellGood(int itemIndex)
 {
-    Item *temp = goods[itemIndex];
+    Item *selectedItem = goods[itemIndex];
     goods[itemIndex] = nullptr;
-
-    return temp; // 回傳購買種類，暫且還沒列出（待修）
+    return selectedItem;
 }
 
 void Merchant::printAllGoods()

@@ -19,11 +19,13 @@ class Item
 protected:
     string itemType;
     string itemName;
+    int price;
 
 public:
+    Item(string aItemType, string aItemName, int price);
     virtual void useItem();
-    Item(string aItemType, string aItemName);
     virtual void print();
+    int getPrice() { return price; }
 };
 
 class Potion : public Item
@@ -32,7 +34,7 @@ protected:
     string potionType;
 
 public:
-    Potion(string itemType, string itemName);
+    Potion(string itemType, string itemName, int price) : Item(itemType, itemName, price) { potionType = itemType; };
     virtual void print()
     {
         cout << "Invoked print() of Item. Please invoke child class's print function.";
@@ -46,7 +48,7 @@ protected:
     const int baseATK = -1;
 
 public:
-    Weapon(string weaponName, int damage);
+    Weapon(int damage, int price) : Item("Weapon", "武器", price), baseATK(damage) {};
     void useWeapon(Character &aChar);
     void print();
 };
@@ -57,7 +59,7 @@ private:
     int potionStrength = -1;
 
 public:
-    AttackPotion(int strength) : Potion("Attack Potion", "攻擊藥水"), potionStrength(strength) {};
+    AttackPotion(int strength, int price) : Potion("Attack Potion", "攻擊藥水", price), potionStrength(strength) {};
     ~AttackPotion() {};
     void useItem(Character &aChar);
     void print();
@@ -69,16 +71,16 @@ private:
     int potionStrength = -1;
 
 public:
-    HealthPotion(int strength) : Potion("Health Potion", "生命藥水"), potionStrength(strength) {};
+    HealthPotion(int strength, int price) : Potion("Health Potion", "生命藥水", price), potionStrength(strength) {};
     ~HealthPotion() {};
     void useItem(Character &aChar);
     void print();
 };
-
+// 待：修改為時間內不夠hp
 class Shield : public Item
 {
 public:
-    Shield(string shieldName) : Item("Shield", shieldName) {};
+    Shield(string shieldName, int price) : Item("Shield", shieldName, price) {};
     void print();
 };
 

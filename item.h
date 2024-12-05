@@ -23,7 +23,7 @@ protected:
 
 public:
     Item(string aItemType, string aItemName, int price);
-    virtual void useItem();
+    virtual void useItem(Character &aChar);
     virtual void print();
     int getPrice() { return price; }
 };
@@ -42,18 +42,18 @@ public:
     };
 };
 
-class Weapon : public Item
+class Weapon : public Item //永久增加
 {
 protected:
     const int baseATK = -1;
 
 public:
     Weapon(int damage, int price) : Item("Weapon", "武器", price), baseATK(damage) {};
-    void useWeapon(Character &aChar);
+    void useItem(Character &aChar);
     void print();
 };
 
-class AttackPotion : public Potion
+class AttackPotion : public Potion //待：僅增加存在一些時間
 {
 private:
     int potionStrength = -1;

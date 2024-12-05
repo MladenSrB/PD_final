@@ -76,10 +76,34 @@ bool Player::boughtItem(Item *item)
     backpack[backpackCount++] = item;
     return true;
 }
-bool Player::usedItem(int itemIndex)
-{
 
+bool Player::usedItem(int usedIndex)
+{
+    if (usedIndex < 0 || usedIndex >= backpackCount)
+    {
+        cout << "輸出無效\n";
+        return false;
+    }
+
+    // 使用物品
+    cout << "使用中...";// 待：新增使用的商品說明
+    /*backpack[usedIndex]->print();
+    cout << endl;*/
+
+    backpack[usedIndex]->useItem(*this);
+
+    // 移除物品
+    delete backpack[usedIndex];
+    for (int i = usedIndex; i < backpackCount - 1; ++i)
+    {
+        backpack[i] = backpack[i + 1];
+    }
+
+    backpackCount--;
+
+    return true;
 }
+
 
 void Player::printBackpack()
 {

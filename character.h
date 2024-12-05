@@ -51,7 +51,7 @@ public:
     void upgrade();
     
     bool boughtItem(Item *item);
-    bool usedItem(int itemIndex);
+    bool usedItem(int usedIndex);
     void printBackpack();
     int getBackpackLimit() { return backpackLimit; };
     int getBackpackCount() { return backpackCount; };

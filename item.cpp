@@ -10,7 +10,7 @@ Item::Item(string aItemType, string aItemName, int price)
     this->price = price;
 }
 
-void Item::useItem() {}
+void Item::useItem(Character &aChar) {}
 
 void Item::print()
 {
@@ -30,7 +30,7 @@ void HealthPotion::print() { cout << itemName << "| " << "Strength: " << potionS
 
 //Weapon::Weapon(int damage, int price) : Item("Weapon", "武器", price), baseATK(damage) {}
 
-void Weapon::useWeapon(Character &aChar){ aChar.setatk(baseATK + aChar.getatk()); }
+void Weapon::useItem(Character &aChar){ aChar.setatk(baseATK + aChar.getatk()); }
 
 void Weapon::print() { cout << itemName << "| " << "ATK: " << baseATK << " | $ " << price; }
 

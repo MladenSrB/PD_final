@@ -17,7 +17,7 @@ char getch()
 }
 
 // 構造函數
-Game::Game(Player &p) : SIZE(21), maze(SIZE, vector<int>(SIZE, 0)), playerX(1), playerY(1), player(p)
+Game::Game(Player &p, bool &key) : SIZE(21), maze(SIZE, vector<int>(SIZE, 0)), playerX(1), playerY(1), player(p), haveKey(key)
 {
     dx[0] = -1;
     dx[1] = 1;
@@ -190,6 +190,13 @@ void Game::movePlayer(char move)
     {
         newY = playerY + 1;
     }
+    else if (move == 'u')
+    {
+        int usedIndex;
+        cout << "請於背包中查看擁有之商品，輸入編號即可立即使用！\n";
+        cin >> usedIndex;
+        player.usedItem(usedIndex);
+    }
 
     playerX = newX;
     playerY = newY;
@@ -223,6 +230,7 @@ void Game::handleHint()
                 if (player.getCoin() >= 50) {
                     player.decreaseCoin(50);
                     cout << "購買成功！\n";
+                    haveKey = true;
                 }
                 else { cout << "餘額不足\n"; }
             }
@@ -240,16 +248,11 @@ void Game::handleHint()
             int gameType = rand() % 3;
             if (gameType == 0)
             {
-                //DinoGame dinoGame;
-                //dinoGame.startGame(player);
                 RedLightGame redLight(10, 100);
                 redLight.startGame();
             }
             else if (gameType == 1)
             {
-                //DinoGame dinoGame;
-                //dinoGame.startGame(player);
-                
                 Clickgame clickGame;
                 clickGame.startGame(player);
             }
@@ -276,7 +279,7 @@ void Game::start()
 {
     while (true)
     {
-        system("clear"); // 在 macOS 上使用 clear 清除屏幕
+        system("clear");
         displayMaze();
         cout << "\nUse WASD to move (w = up, s = down, a = left, d = right)\n";
         cout << "終點為最右下方\n";
@@ -288,29 +291,52 @@ void Game::start()
         // 處理提示事件
         handleHint();
 
-        /*if (palyer.gethp <= 0) {
+        if (player.gethp() <= 0) { // 確認玩家血量
             system("clear");
             cout << "生命已到盡頭，是否使用藥水恢復？\n";
-            cout << "請輸入y or n\n";
+            cout << "請輸入 y 或 n：";
             char continued;
             cin >> continued;
-            if (continued == "y") {
-                player.usedItem;
-                displayMaze();
-            }
-            else {
-                cout << "game over\n";
-            }
 
-        }*/
+            if (continued == 'y') {
+                system("clear");
+                displayMaze();
+                
+                int usedIndex;
+                cout << "請輸入要使用的物品編號：";
+                cin >> usedIndex;
+
+                if (player.usedItem(usedIndex)) {
+                    cout << "復活成功！" << endl;
+                }
+                else {
+                    cout << "輸入無效！" << endl;
+                    cout << "Game Over!" << endl;
+                    exit(0);
+                }
+            } 
+            else {
+                cout << "Game Over!" << endl;
+                exit(0);
+            } 
+        }
+
         // 檢查玩家是否到達終點
         if (playerX == SIZE - 2 && playerY == SIZE - 2)
         {
-            system("clear");
-            displayMaze();
-            cout << "\nCongratulations! You win!\n";
-            break;
+            if (haveKey) {
+                system("clear");
+                displayMaze();
+                cout << "\nCongratulations! You win!\n";
+                break;
+            }
+            else{
+                cout << "沒有鑰匙，無法開啟迷宮大門！請賺取更多金幣購買鑰匙！\n";
+                std::this_thread::sleep_for(std::chrono::seconds(2));
+            }
         }
+        
+            
     }
 }
 
@@ -324,6 +350,7 @@ int main()
     // 創建玩家角色
     Player player(playerName);
     cout << "\n你好, " << playerName << "！祝你好運！\n";
+    bool haveKey = false;
 
     while (true)
     {
@@ -344,7 +371,7 @@ int main()
         {
             // 開始遊戲
             cout << "正在進入遊戲...\n";
-            Game game(player); // 傳遞玩家角色
+            Game game(player, haveKey); // 傳遞玩家角色
             game.start();      // 開始遊戲
         }
         else if (choice == 2)

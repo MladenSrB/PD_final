@@ -26,12 +26,13 @@ private:
     map<pair<int, int>, HintType> hints;
     int playerX, playerY;
 
-    int dx[4]; // 移動方向
+    int dx[4];
     int dy[4];
-    Player &player; // 傳入玩家物件
+    Player &player;
+    bool haveKey = false; //有鑰匙才能出來
 
 public:
-    Game(Player &p); // 傳入 Player 參考
+    Game(Player &p, bool &key);
     void generateMaze(int x, int y);
     void placeHints();
     void displayMaze();

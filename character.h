@@ -23,6 +23,10 @@ protected:
     int level;   // 等級
     int atk;     // 攻擊力
 
+    chrono::time_point<chrono::steady_clock> shieldStartTime;
+    bool isShieldActive;
+    int shieldDuration;
+
 public:
     Character(string name);
     void attack(Character c, int atkpt);
@@ -31,6 +35,11 @@ public:
     void sethp(int newhp) { hp = newhp; };
     int gethp() { return hp; };
     int getlevel() { return level; };
+
+    void setShieldTime(int durationInSeconds);
+    int getShieldRemainingTime();
+    bool checkShieldStatus();
+    void move();
 };
 
 class Player : public Character
@@ -64,6 +73,8 @@ public:
     int getExp() { return exp; };
     void decreaseHp(int blood) { hp -= blood; };
     void addHp(int blood) { hp += blood; };
+
+    int getShieldRemainingTime() { return Character::getShieldRemainingTime(); }
     
 };
 

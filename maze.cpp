@@ -91,7 +91,7 @@ void Game::placeHints()
 
     // 放置金幣 (1~10 個)
     int coinCount = rand() % 10 + 1;
-    for (int i = 0; i < coinCount; i++)
+    for (int i = 0; i < 15; i++)
     {
         while (true)
         {
@@ -130,6 +130,13 @@ void Game::displayMaze()
     
     player.printBackpack();
     cout << endl;
+
+    // 如果玩家的盾牌正在啟用，顯示盾牌剩餘時間
+    int shieldTime = player.getShieldRemainingTime();
+    if (shieldTime > 0)
+    {
+        cout << "使用盾牌，保護時效內移動將不會損耗任何HP，效果將持續 " << shieldTime << " 秒！" << endl;
+    }
 
     for (int i = 0; i < SIZE; ++i)
     {
@@ -200,7 +207,7 @@ void Game::movePlayer(char move)
 
     playerX = newX;
     playerY = newY;
-    player.decreaseHp(1);
+    player.move();
 }
 
 // 處理提示事件

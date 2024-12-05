@@ -16,12 +16,55 @@ Character::Character(string name)
     hp = 100;
     level = 1;
     atk = 5;
+    isShieldActive = false;
+    shieldDuration = 0;
 }
 
 void Character::attack(Character c, int atkpt)
 {
     c.hp -= atkpt;
 }
+
+void Character::setShieldTime(int durationInSeconds)
+{
+    shieldStartTime = chrono::steady_clock::now();
+    isShieldActive = true;
+    shieldDuration = durationInSeconds;
+}
+
+int Character::getShieldRemainingTime() {
+    if (isShieldActive) {
+        auto currentTime = chrono::steady_clock::now();
+        // 計算已經過的時間
+        auto elapsedTime = chrono::duration_cast<chrono::seconds>(currentTime - shieldStartTime).count();
+        // 類型一致
+        return max(0, shieldDuration - static_cast<int>(elapsedTime));
+    }
+    return 0;
+}
+
+// 每次玩家移動時，檢查是否盾牌還有效
+bool Character::checkShieldStatus()
+{
+    if (isShieldActive)
+    {
+        auto currentTime = chrono::steady_clock::now();
+        auto elapsedTime = chrono::duration_cast<chrono::seconds>(currentTime - shieldStartTime).count();
+
+        if (elapsedTime >= shieldDuration)
+        {
+            isShieldActive = false;
+            return false;
+        }
+        return true;
+    }
+    return false;
+}
+
+void Character::move()
+    {
+        if (!checkShieldStatus()) { hp--; }
+    }
 
 Player::Player(string name) : Character(name)
 {
@@ -86,6 +129,7 @@ bool Player::usedItem(int usedIndex)
     }
 
     // 使用物品
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     cout << "使用中...";// 待：新增使用的商品說明
     /*backpack[usedIndex]->print();
     cout << endl;*/
@@ -146,10 +190,10 @@ Merchant::Merchant() : Character("Merchant")
     goods = new Item *[goodsCnt];
 
     srand(time(NULL));
-    goods[0] = new HealthPotion(rand() % (15 - 5 + 1) + 5, 15); // strength of the poisons are randomly assigned within 5~15
-    goods[1] = new AttackPotion(rand() % (15 - 5 + 1) + 5, 5);
-    goods[2] = new Weapon(rand() % (10 - 1 + 1) + 1, 10); // 產生ATK 1~10的武器
-    goods[3] = new Shield("Shield", 20);
+    goods[0] = new HealthPotion(rand() % (25) + 5, 15); // strength of the poisons are randomly assigned within 5~15
+    goods[1] = new AttackPotion(rand() % (10) + 5, 5);
+    goods[2] = new Weapon(rand() % (10) + 1, 10); // 產生ATK 1~10的武器
+    goods[3] = new Shield(rand() % (10) + 1, 20);
 }
 
 Merchant::~Merchant()

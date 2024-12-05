@@ -79,9 +79,15 @@ public:
 // 待：修改為時間內不夠hp
 class Shield : public Item
 {
+private:
+    int validTime;
 public:
-    Shield(string shieldName, int price) : Item("Shield", shieldName, price) {};
+    Shield(int time, int price) : Item("Shield", "盾牌", price), validTime(time) {};
+    void useItem(Character &aChar);
     void print();
+    int getValidTime() { return validTime; } 
+    void setValidTime(int time) { validTime = time; }
 };
+
 
 #endif

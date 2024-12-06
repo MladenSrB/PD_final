@@ -7,6 +7,7 @@
 
 #include "character.h"
 #include "item.h"
+#include "backpack.h"
 
 using namespace std;
 
@@ -32,8 +33,10 @@ void Character::setShieldTime(int durationInSeconds)
     shieldDuration = durationInSeconds;
 }
 
-int Character::getShieldRemainingTime() {
-    if (isShieldActive) {
+int Character::getShieldRemainingTime()
+{
+    if (isShieldActive)
+    {
         auto currentTime = chrono::steady_clock::now();
         // 計算已經過的時間
         auto elapsedTime = chrono::duration_cast<chrono::seconds>(currentTime - shieldStartTime).count();
@@ -62,67 +65,59 @@ bool Character::checkShieldStatus()
 }
 
 void Character::move()
+{
+    if (!checkShieldStatus())
     {
-        if (!checkShieldStatus()) { hp--; }
+        hp--;
     }
+}
 
 Player::Player(string name) : Character(name)
 {
     coin = 0;
     exp = 0;
-    backpackLimit = 3;
-    backpackCount = 0;
-    backpack = new Item *[backpackLimit];
+    int backpackLimit = 3;
+    backpack = new Backpack(3);
 }
 
 Player::~Player()
 {
-    for (int i = 0; i < backpackCount; ++i)
-    {
-        delete backpack[i];
-    }
-    delete[] backpack;
+    backpack->~Backpack();
 }
 
 void Player::upgrade()
 {
     level++;
     atk += 5;
-    backpackLimit++;
-    Item **newBackpack = new Item *[backpackLimit];
-
-    for (int i = 0; i < backpackCount; ++i)
-    {
-        newBackpack[i] = backpack[i];
-    }
-    delete[] backpack;
-    backpack = newBackpack;
 }
 
 bool Player::boughtItem(Item *item)
 {
-    if (backpackCount >= backpackLimit) {
+    if (backpack->getBackpackCount() >= backpack->getBackpackLimit())
+    {
         cout << "已額滿\n";
         return false;
     }
 
     int itemPrice = item->getPrice();
-    if (getCoin() < itemPrice) {
+    if (getCoin() < itemPrice)
+    {
         cout << "餘額不足\n";
         return false;
     }
-    else {
+    else
+    {
         decreaseCoin(itemPrice);
         cout << "購買成功！\n";
     }
 
-    backpack[backpackCount++] = item;
+    backpack->addItem(*item);
     return true;
 }
 
 bool Player::usedItem(int usedIndex)
 {
-    if (usedIndex < 0 || usedIndex >= backpackCount)
+    if (usedIndex < 0 || usedIndex >= backpack->getBackpackCount())
     {
         cout << "輸出無效\n";
         return false;
@@ -130,37 +125,18 @@ bool Player::usedItem(int usedIndex)
 
     // 使用物品
     std::this_thread::sleep_for(std::chrono::seconds(1));
-    cout << "使用中...";// 待：新增使用的商品說明
+    cout << "使用中..."; // 待：新增使用的商品說明
     /*backpack[usedIndex]->print();
     cout << endl;*/
 
-    backpack[usedIndex]->useItem(*this);
-
-    // 移除物品
-    delete backpack[usedIndex];
-    for (int i = usedIndex; i < backpackCount - 1; ++i)
-    {
-        backpack[i] = backpack[i + 1];
-    }
-
-    backpackCount--;
+    backpack->useItem(usedIndex, *this);
 
     return true;
 }
 
-
-void Player::printBackpack()
+void Player::openBackpack()
 {
-    
-    if (backpackCount == 0) { cout << "暫無內容\n"; }
-    else {
-        cout << "背包內容如下\n";
-        for (int i = 0; i < backpackCount; i++) {
-            cout << "[" << i << "] ";
-            backpack[i]->print();
-            cout << '\n';
-        }
-    }
+    backpack->openBackpack(*this);
 }
 
 void Player::addExp(int pt)

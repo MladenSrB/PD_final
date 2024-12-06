@@ -1,13 +1,25 @@
-/* Version: 04.1517 */
+/* Version: 06.1520 */
 #include "maze.h"
 using namespace std;
+
+void clearAndResetCursor()
+{
+    system("clear");
+    std::cout << "\033[H"; // move cursor to top of the screen
+}
+
+void setTerminalSize(int rows, int cols)
+{
+    std::string command = "printf '\\e[8;" + std::to_string(rows) + ";" + std::to_string(cols) + "t'";
+    system(command.c_str());
+}
 
 // 用來設置非阻塞鍵盤輸入
 char getch()
 {
     struct termios oldt, newt;
     char ch;
-    tcgetattr(STDIN_FILENO, &oldt); // 獲取當前終端設置
+    tcgetattr(STDIN_FILENO, &oldt); // 獲取當前終端設置printCentered("使用方向鍵選擇，Enter 確認使用", screenWidth)
     newt = oldt;
     newt.c_lflag &= ~(ICANON | ECHO);        // 設置為非終端模式 (不等到Enter)
     tcsetattr(STDIN_FILENO, TCSANOW, &newt); // 設置終端模式
@@ -121,15 +133,13 @@ void Game::placeHints()
     }
 }
 
-
 // 顯示迷宮和玩家資訊
 void Game::displayMaze()
 {
+    setTerminalSize(30, 50);
+    clearAndResetCursor();
     cout << "Level: " << player.getlevel() << " | EXP: " << player.getExp() << " | HP: " << player.gethp()
          << " | ATK: " << player.getatk() << " | Coin: " << player.getCoin() << "\n\n";
-    
-    player.printBackpack();
-    cout << endl;
 
     // 如果玩家的盾牌正在啟用，顯示盾牌剩餘時間
     int shieldTime = player.getShieldRemainingTime();
@@ -175,7 +185,6 @@ void Game::displayMaze()
     }
 }
 
-
 // 玩家移動控制
 void Game::movePlayer(char move)
 {
@@ -204,6 +213,11 @@ void Game::movePlayer(char move)
         cin >> usedIndex;
         player.usedItem(usedIndex);
     }
+    else if (move == 'b')
+    {
+        clearAndResetCursor();
+        player.openBackpack();
+    }
 
     playerX = newX;
     playerY = newY;
@@ -217,7 +231,7 @@ void Game::handleHint()
     {
         Merchant *merchant = nullptr;
         int coinAmount = rand() % 50 + 1;
-        
+
         HintType type = hints[{playerX, playerY}];
         switch (type)
         {
@@ -225,26 +239,47 @@ void Game::handleHint()
             merchant = new Merchant();
             cout << "\n你遇到了一位商人！以下是他的商品：\n";
             merchant->printAllGoods();
-            cout << "[4] key: $ 50\n\n輸入商品編號購買，或輸入 -1 離開：";
-            int purchaseIndex;
-            cin >> purchaseIndex;
-            if (purchaseIndex >= 0 && purchaseIndex < 4)
+            cout << "[4] key: $ 50\n\n輸入商品編號購買，或輸入 esc 離開：";
+
+            try
+
             {
-                Item *purchasedItem = merchant->sellGood(purchaseIndex);
-                player.boughtItem(purchasedItem);
-            }
-            else if (purchaseIndex == 4) {
-                if (player.getCoin() >= 50) {
-                    player.decreaseCoin(50);
-                    cout << "購買成功！\n";
-                    haveKey = true;
+                char input = getch();
+                if (input >= '0' && input < '4')
+                {
+                    Item *purchasedItem = merchant->sellGood(input - '0');
+                    player.boughtItem(purchasedItem);
+                    break;
                 }
-                else { cout << "餘額不足\n"; }
+                else if (input == '4')
+                {
+                    if (player.getCoin() >= 50)
+                    {
+                        player.decreaseCoin(50);
+                        cout << "購買成功！\n";
+                        haveKey = true;
+                        break;
+                    }
+                    else
+                    {
+                        cout << "餘額不足\n";
+                        break;
+                    }
+                }
+                else if (input == '\033')
+                {
+                    break;
+                }
+                else
+                {
+                    __throw_out_of_range("Invalid Index");
+                }
             }
-            else { // 輸入非數字會卡bug
-                cout << "\n輸出無效，商人生氣跑走了\n";
+            catch (std::exception &e)
+            {
+                cout << "無效的輸入值：" << e.what() << "\n";
             }
-            break;
+
         case HINT_COIN:
             player.addCoin(coinAmount);
             cout << "\n哎呦真幸運，恭喜獲得 " << coinAmount << " 金幣！\n";
@@ -267,8 +302,8 @@ void Game::handleHint()
             {
                 RedLightGame redLight(10, 100);
                 redLight.startGame();
-                //DinoGame dinoGame;
-                //dinoGame.startGame(player);
+                // DinoGame dinoGame;
+                // dinoGame.startGame(player);
             }
             player.addExp(50);
             break;
@@ -276,8 +311,6 @@ void Game::handleHint()
 
         // 移除已觸發的提示
         hints.erase({playerX, playerY});
-
-        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 }
 
@@ -286,10 +319,8 @@ void Game::start()
 {
     while (true)
     {
-        system("clear");
+        clearAndResetCursor();
         displayMaze();
-        cout << "\nUse WASD to move (w = up, s = down, a = left, d = right)\n";
-        cout << "終點為最右下方\n";
 
         // 玩家移動
         char move = getch(); // 使用 getch() 讀取即時鍵盤輸入
@@ -298,57 +329,65 @@ void Game::start()
         // 處理提示事件
         handleHint();
 
-        if (player.gethp() <= 0) { // 確認玩家血量
-            system("clear");
-            cout << "生命已到盡頭，是否使用藥水恢復？\n";
-            cout << "請輸入 y 或 n：";
-            char continued;
-            cin >> continued;
-
-            if (continued == 'y') {
-                system("clear");
-                displayMaze();
-                
-                int usedIndex;
-                cout << "請輸入要使用的物品編號：";
-                cin >> usedIndex;
-
-                if (player.usedItem(usedIndex)) {
-                    cout << "復活成功！" << endl;
+        if (player.gethp() <= 0)
+        { // 確認玩家血量
+            clearAndResetCursor();
+            std::cout << "你快死了！要看看背包裡有哪些道具能用嗎？\n";
+            std::cout << "請輸入 Y 或 N：";
+            char input = getch();
+            while (input)
+            {
+                char input = getch();
+                if (input == 'y')
+                {
+                    clearAndResetCursor();
+                    player.openBackpack();
+                    if (player.gethp() < 0)
+                    {
+                        clearAndResetCursor();
+                        std::cout << "Game Over!" << endl;
+                        exit(0);
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
-                else {
-                    cout << "輸入無效！" << endl;
-                    cout << "Game Over!" << endl;
+                else if (input == 'n')
+                {
+                    clearAndResetCursor();
+                    std::cout << "Game Over!" << endl;
                     exit(0);
                 }
-            } 
-            else {
-                cout << "Game Over!" << endl;
-                exit(0);
-            } 
+                else
+                {
+                    input = getch();
+                }
+            }
         }
 
         // 檢查玩家是否到達終點
         if (playerX == SIZE - 2 && playerY == SIZE - 2)
         {
-            if (haveKey) {
-                system("clear");
+            if (haveKey)
+            {
+                clearAndResetCursor();
                 displayMaze();
                 cout << "\nCongratulations! You win!\n";
                 break;
             }
-            else{
+            else
+            {
                 cout << "沒有鑰匙，無法開啟迷宮大門！請賺取更多金幣購買鑰匙！\n";
                 std::this_thread::sleep_for(std::chrono::seconds(2));
             }
         }
-        
-            
     }
 }
 
 int main()
 {
+    clearAndResetCursor();
     cout << "歡迎來到迷宮遊戲！\n";
     cout << "請輸入你的角色名字: ";
     string playerName;
@@ -361,6 +400,7 @@ int main()
 
     while (true)
     {
+        clearAndResetCursor();
         // 主菜單
         cout << "==============================" << endl;
         cout << "        迷宮遊戲主菜單        " << endl;
@@ -379,7 +419,7 @@ int main()
             // 開始遊戲
             cout << "正在進入遊戲...\n";
             Game game(player, haveKey); // 傳遞玩家角色
-            game.start();      // 開始遊戲
+            game.start();               // 開始遊戲
         }
         else if (choice == 2)
         {

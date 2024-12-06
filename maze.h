@@ -1,4 +1,4 @@
-/* Version: 04.1517 */
+/* Version: 06.1520 */
 #ifndef MAZE_H
 #define MAZE_H
 
@@ -13,9 +13,9 @@ char getch(); // 非阻塞鍵盤輸入
 
 enum HintType
 {
-    HINT_SHOP,    // 商人
-    HINT_COIN,    // 金幣
-    HINT_MINE     // 地雷
+    HINT_SHOP, // 商人
+    HINT_COIN, // 金幣
+    HINT_MINE  // 地雷
 };
 
 class Game
@@ -29,7 +29,7 @@ private:
     int dx[4];
     int dy[4];
     Player &player;
-    bool haveKey = false; //有鑰匙才能出來
+    bool haveKey = false; // 有鑰匙才能出來
 
 public:
     Game(Player &p, bool &key);

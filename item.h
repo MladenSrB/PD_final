@@ -1,4 +1,4 @@
-/* Version: 04.1517 */
+/* Version: 06.1520 */
 
 /* CHANGE LOG */
 
@@ -12,7 +12,7 @@
 
 using namespace std;
 
-class Character;
+class Player;
 
 class Item
 {
@@ -22,8 +22,9 @@ protected:
     int price;
 
 public:
+    Item() {};
     Item(string aItemType, string aItemName, int price);
-    virtual void useItem(Character &aChar);
+    virtual void useItem(Player &aPlayer);
     virtual void print();
     int getPrice() { return price; }
 };
@@ -42,18 +43,18 @@ public:
     };
 };
 
-class Weapon : public Item //永久增加
+class Weapon : public Item // 永久增加
 {
 protected:
     const int baseATK = -1;
 
 public:
     Weapon(int damage, int price) : Item("Weapon", "武器", price), baseATK(damage) {};
-    void useItem(Character &aChar);
+    void useItem(Player &aPlayer);
     void print();
 };
 
-class AttackPotion : public Potion //待：僅增加存在一些時間
+class AttackPotion : public Potion // 待：僅增加存在一些時間
 {
 private:
     int potionStrength = -1;
@@ -61,7 +62,7 @@ private:
 public:
     AttackPotion(int strength, int price) : Potion("Attack Potion", "攻擊藥水", price), potionStrength(strength) {};
     ~AttackPotion() {};
-    void useItem(Character &aChar);
+    void useItem(Player &aPlayer);
     void print();
 };
 
@@ -73,7 +74,7 @@ private:
 public:
     HealthPotion(int strength, int price) : Potion("Health Potion", "生命藥水", price), potionStrength(strength) {};
     ~HealthPotion() {};
-    void useItem(Character &aChar);
+    void useItem(Player &aPlayer);
     void print();
 };
 // 待：修改為時間內不夠hp
@@ -81,13 +82,13 @@ class Shield : public Item
 {
 private:
     int validTime;
+
 public:
     Shield(int time, int price) : Item("Shield", "盾牌", price), validTime(time) {};
-    void useItem(Character &aChar);
+    void useItem(Player &aPlayer);
     void print();
-    int getValidTime() { return validTime; } 
+    int getValidTime() { return validTime; }
     void setValidTime(int time) { validTime = time; }
 };
-
 
 #endif

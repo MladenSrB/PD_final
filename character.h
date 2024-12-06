@@ -1,4 +1,4 @@
-/* Version: 04.1517 */
+/* Version: 06.1520 */
 
 /* CHANGE LOG */
 
@@ -10,10 +10,12 @@
 
 #include "redistributable.h"
 #include "item.h"
+#include "backpack.h"
 
 using namespace std;
 
 class Item; // 前向宣告
+class Backpack;
 
 class Character
 {
@@ -45,9 +47,7 @@ public:
 class Player : public Character
 {
 private:
-    Item **backpack;
-    int backpackLimit;
-    int backpackCount;
+    Backpack *backpack;
     int exp;
     int x;
     int y;
@@ -58,24 +58,19 @@ public:
     Player(string name);
     ~Player();
     void upgrade();
-    
+
     bool boughtItem(Item *item);
     bool usedItem(int usedIndex);
-    void printBackpack();
-    int getBackpackLimit() { return backpackLimit; };
-    int getBackpackCount() { return backpackCount; };
-    
+    void openBackpack();
+
     void addCoin(int c) { coin += c; };
     int getCoin() { return coin; };
     void decreaseCoin(int c) { coin -= c; };
- 
+
     void addExp(int pt);
     int getExp() { return exp; };
     void decreaseHp(int blood) { hp -= blood; };
     void addHp(int blood) { hp += blood; };
-
-    int getShieldRemainingTime() { return Character::getShieldRemainingTime(); }
-    
 };
 
 class Monster : public Character

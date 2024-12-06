@@ -290,20 +290,22 @@ void Game::handleHint()
             int gameType = rand() % 3;
             if (gameType == 0)
             {
-                RedLightGame redLight(10, 100);
-                redLight.startGame();
+                DinoGame dinoGame;
+                dinoGame.startGame(player);
+                // RedLightGame redLight(10, 100);
+                // redLight.startGame();
             }
             else if (gameType == 1)
             {
-                Clickgame clickGame;
-                clickGame.startGame(player);
+                DinoGame dinoGame;
+                dinoGame.startGame(player);
+                // Clickgame clickGame;
+                // clickGame.startGame(player);
             }
             else
             {
-                RedLightGame redLight(10, 100);
-                redLight.startGame();
-                // DinoGame dinoGame;
-                // dinoGame.startGame(player);
+                DinoGame dinoGame;
+                dinoGame.startGame(player);
             }
             player.addExp(50);
             break;

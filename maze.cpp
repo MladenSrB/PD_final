@@ -2,6 +2,7 @@
 #include "maze.h"
 using namespace std;
 
+
 void clearAndResetCursor()
 {
     system("clear");
@@ -430,14 +431,26 @@ int main()
             {
                 // 遊戲說明
                 clearAndResetCursor();
-                cout << "遊戲說明：" << endl;
-                cout << "1. 使用鍵盤 WASD 來控制角色移動。" << endl;
-                cout << "2. 迷宮中隨機生成提示標誌 (!)，" << endl;
-                cout << "   觸碰它們會觸發小遊戲，例如紅綠燈遊戲。" << endl;
-                cout << "3. 找到迷宮的終點來完成挑戰！" << endl;
-                cout << "4. 每完成挑戰，你將獲得經驗值 (EXP) 或失去血量 (HP)。" << endl;
-                cout << endl;
-                cout << "按【Enter】確認" << endl;
+                // 檔案名稱
+                string filename = "./gameIntro.txt";
+                
+                // 開啟檔案
+                ifstream file(filename);
+                
+                // 確認檔案是否成功開啟
+                if (!file.is_open()) {
+                    std::cerr << "無法開啟檔案: " << filename << std::endl;
+                    return 1; // 返回錯誤代碼
+                }
+
+                // 逐行讀取並印出
+                string line;
+                while (getline(file, line)) {
+                    cout << line << std::endl;
+                }
+
+                // 關閉檔案
+                file.close();
                 while (getch() != '\n')
                 {
                 }

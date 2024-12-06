@@ -1,4 +1,4 @@
-/* Version: 06.1520 */
+/* Version: 06.1700 */
 #include "maze.h"
 using namespace std;
 
@@ -412,45 +412,44 @@ int main()
         cout << "3. 離開遊戲" << endl;
         cout << "請選擇 (輸入 1, 2 或 3): ";
 
-        int choice;
-        cin >> choice;
-        cout << endl;
-
-        if (choice == 1)
+        char input = getch();
+        while (input)
         {
-            // 開始遊戲
-            cout << "正在進入遊戲...\n";
-            Game game(player, haveKey); // 傳遞玩家角色
-            game.start();               // 開始遊戲
+            char input = getch();
+            if (input == '1')
+            {
+                // 開始遊戲
+                cout << "正在進入遊戲...\n";
+                Game game(player, haveKey); // 傳遞玩家角色
+                game.start();               // 開始遊戲
+            }
+            else if (input == '2')
+            {
+                // 遊戲說明
+                clearAndResetCursor();
+                cout << "遊戲說明：" << endl;
+                cout << "1. 使用鍵盤 WASD 來控制角色移動。" << endl;
+                cout << "2. 迷宮中隨機生成提示標誌 (!)，" << endl;
+                cout << "   觸碰它們會觸發小遊戲，例如紅綠燈遊戲。" << endl;
+                cout << "3. 找到迷宮的終點來完成挑戰！" << endl;
+                cout << "4. 每完成挑戰，你將獲得經驗值 (EXP) 或失去血量 (HP)。" << endl;
+                cout << endl;
+                cout << "按【Enter】確認" << endl;
+                while (getch() != '\n')
+                {
+                }
+            }
+            else if (input == '3')
+            {
+                clearAndResetCursor();
+                cout << "再見！" << playerName << endl;
+                exit(0);
+            }
+            else
+            {
+                input = getch();
+            }
         }
-        else if (choice == 2)
-        {
-            // 遊戲說明
-            cout << "遊戲說明：" << endl;
-            cout << "1. 使用鍵盤 WASD 來控制角色移動。" << endl;
-            cout << "2. 迷宮中隨機生成提示標誌 (!)，" << endl;
-            cout << "   觸碰它們會觸發小遊戲，例如紅綠燈遊戲。" << endl;
-            cout << "3. 找到迷宮的終點來完成挑戰！" << endl;
-            cout << "4. 每完成挑戰，你將獲得經驗值 (EXP) 或失去血量 (HP)。" << endl;
-            cout << endl;
-        }
-        else if (choice == 3)
-        {
-            // 離開遊戲
-            cout << "感謝遊玩！再見！" << endl;
-            break;
-        }
-        else
-        {
-            // 無效選項
-            cout << "無效選項，請重新輸入！" << endl;
-        }
-
-        // 暫停等待用戶繼續
-        cout << "\n按 Enter 鍵返回主選單..." << endl;
-        cin.ignore();
-        cin.get();
+        return 0;
     }
-
-    return 0;
 }

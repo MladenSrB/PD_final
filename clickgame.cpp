@@ -1,4 +1,4 @@
-/* Version: 06.1520 */
+/* Version: 06.1700 */
 #include "clickgame.h"
 
 using namespace std;

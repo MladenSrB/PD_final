@@ -51,6 +51,7 @@ Game::Game(Player &p, bool &key) : SIZE(21), maze(SIZE, vector<int>(SIZE, 0)), p
         maze[0][i] = maze[SIZE - 1][i] = 0;
         maze[i][0] = maze[i][SIZE - 1] = 0;
     }
+    maze[SIZE - 1][SIZE - 2] = 1; // 開洞
     // 隨機放置提示標示
     placeHints();
 }
@@ -86,8 +87,9 @@ void Game::generateMaze(int x, int y)
 // 隨機放置提示標示
 void Game::placeHints()
 {
-    // 放置商人 (2 個)
-    for (int i = 0; i < 10; i++)
+    // 放置商人
+    int shopCount = rand() % 5 + 5;
+    for (int i = 0; i < shopCount; i++)
     {
         while (true)
         {
@@ -101,9 +103,9 @@ void Game::placeHints()
         }
     }
 
-    // 放置金幣 (1~10 個)
-    int coinCount = rand() % 10 + 1;
-    for (int i = 0; i < 15; i++)
+    // 放置金幣
+    int coinCount = rand() % 5 + 5;
+    for (int i = 0; i < coinCount; i++)
     {
         while (true)
         {
@@ -117,8 +119,9 @@ void Game::placeHints()
         }
     }
 
-    // 放置地雷 (10 個)
-    for (int i = 0; i < 2; i++)
+    // 放置遊戲
+    int gameCount = rand() % 5 + 5;
+    for (int i = 0; i < gameCount; i++)
     {
         while (true)
         {
@@ -162,13 +165,13 @@ void Game::displayMaze()
                 switch (hints[{i, j}])
                 {
                 case HINT_SHOP:
-                    cout << "S "; // 商人
+                    cout << "M "; // 商人
                     break;
                 case HINT_COIN:
                     cout << "$ "; // 金幣
                     break;
                 case HINT_MINE:
-                    cout << "* "; // 地雷
+                    cout << "★ "; // 地雷
                     break;
                 }
             }
@@ -193,26 +196,30 @@ void Game::movePlayer(char move)
     if (move == 'w' && playerX > 0 && maze[playerX - 1][playerY] == 1)
     {
         newX = playerX - 1;
+        player.move();
     }
     else if (move == 's' && playerX < SIZE - 1 && maze[playerX + 1][playerY] == 1)
     {
         newX = playerX + 1;
+        player.move();
     }
     else if (move == 'a' && playerY > 0 && maze[playerX][playerY - 1] == 1)
     {
         newY = playerY - 1;
+        player.move();
     }
     else if (move == 'd' && playerY < SIZE - 1 && maze[playerX][playerY + 1] == 1)
     {
         newY = playerY + 1;
+        player.move();
     }
-    else if (move == 'u')
+    /*else if (move == 'u')
     {
         int usedIndex;
         cout << "請於背包中查看擁有之商品，輸入編號即可立即使用！\n";
         cin >> usedIndex;
         player.usedItem(usedIndex);
-    }
+    }*/
     else if (move == 'b')
     {
         clearAndResetCursor();
@@ -221,7 +228,7 @@ void Game::movePlayer(char move)
 
     playerX = newX;
     playerY = newY;
-    player.move();
+    
 }
 
 // 處理提示事件
@@ -290,17 +297,13 @@ void Game::handleHint()
             int gameType = rand() % 3;
             if (gameType == 0)
             {
-                DinoGame dinoGame;
-                dinoGame.startGame(player);
-                // RedLightGame redLight(10, 100);
-                // redLight.startGame();
+                RedLightGame redLight(10, 100);
+                redLight.startGame();
             }
             else if (gameType == 1)
             {
-                DinoGame dinoGame;
-                dinoGame.startGame(player);
-                // Clickgame clickGame;
-                // clickGame.startGame(player);
+                Clickgame clickGame;
+                clickGame.startGame(player);
             }
             else
             {

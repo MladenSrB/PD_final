@@ -1,4 +1,4 @@
-/* Version: 06.1700 */
+/* Version: 06.1746 */
 #ifndef DINOGAME
 #define DINOGAME
 
@@ -24,8 +24,7 @@ protected:
 public:
   DinoGame() : dinoY(height - 2), isJumping(false), gameOver(false) {}
 
-  void setNonBlockingInput();
-  void resetInput();
+  void setNonBlockingInput(bool enable);
   void displayGame(char map[height][width], int score, int countdown);
   void updateMap(char map[height][width], vector<int> &obstacleX, int &score, int &obstacleSpawnTimer);
   void jump();

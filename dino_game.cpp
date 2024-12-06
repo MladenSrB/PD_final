@@ -1,26 +1,26 @@
-/* Version: 06.1700 */
+/* Version: 06.1746 */
 #include "dino_game.h"
 
 using namespace std;
 using namespace chrono;
 
-void DinoGame::setNonBlockingInput()
+// set terminal to non blocking mode
+void DinoGame::setNonBlockingInput(bool enable)
 {
-    termios term;
-    tcgetattr(STDIN_FILENO, &term);
-    term.c_lflag &= ~ICANON;
-    term.c_lflag &= ~ECHO;
-    tcsetattr(STDIN_FILENO, TCSANOW, &term);
-    fcntl(STDIN_FILENO, F_SETFL, fcntl(STDIN_FILENO, F_GETFL) | O_NONBLOCK);
-}
-
-void DinoGame::resetInput()
-{
-    termios term;
-    tcgetattr(STDIN_FILENO, &term);
-    term.c_lflag |= ICANON;
-    term.c_lflag |= ECHO;
-    tcsetattr(STDIN_FILENO, TCSANOW, &term);
+    struct termios tty;
+    tcgetattr(STDIN_FILENO, &tty);
+    if (enable)
+    {
+        tty.c_lflag &= ~(ICANON | ECHO);
+        tcsetattr(STDIN_FILENO, TCSANOW, &tty);
+        fcntl(STDIN_FILENO, F_SETFL, fcntl(STDIN_FILENO, F_GETFL) | O_NONBLOCK); // 設置非阻塞模式
+    }
+    else
+    {
+        tty.c_lflag |= (ICANON | ECHO);
+        tcsetattr(STDIN_FILENO, TCSANOW, &tty);
+        fcntl(STDIN_FILENO, F_SETFL, fcntl(STDIN_FILENO, F_GETFL) & ~O_NONBLOCK); // 關閉非阻塞模式
+    }
 }
 
 void DinoGame::displayGame(char map[height][width], int score, int countdown)
@@ -125,7 +125,7 @@ void DinoGame::startGame(Player &player)
 
     srand(time(0));
 
-    setNonBlockingInput();
+    setNonBlockingInput(true);
 
     auto startTime = chrono::steady_clock::now(); // 開始計時
 
@@ -164,6 +164,7 @@ void DinoGame::startGame(Player &player)
 
     if (gameOver)
     {
+        /*
         coin = score / 3;
         exp = score / 2;
         player.addCoin(coin);
@@ -173,6 +174,7 @@ void DinoGame::startGame(Player &player)
         cout << "coin +" << coin << ", total coin: " << player.getCoin() << endl;
         cout << "exp +" << exp << ", total exp: " << player.getExp() << endl;
         cout << "hp -" << blood << ", total hp: " << player.gethp() << endl;
+        */
         /*for (int sec = 1; sec > 0; sec--)
         {
             std::cout << "Returning to maze in " << sec << " seconds...\r";
@@ -182,15 +184,16 @@ void DinoGame::startGame(Player &player)
             std::cout.flush();
         }*/
     }
+
+    setNonBlockingInput(false);
     // 提示返回迷宮
     cout << "Returning to the maze. Press Enter to continue..." << endl;
-    cin.ignore();
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    // 恢復終端輸入模式
-    resetInput();
-
-    // 重置遊戲狀態
-    gameOver = false;
-    isJumping = false;
+    char input;
+    while (read(STDIN_FILENO, &input, 1) > 0 && input != '\n')
+    {
+        // 等待用戶按下 Enter 鍵
+    }
+    cout << "Bye!";
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 }

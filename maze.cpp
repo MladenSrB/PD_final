@@ -438,6 +438,7 @@ int main()
                 while (getch() != '\n')
                 {
                 }
+                break;
             }
             else if (input == '3')
             {
@@ -450,6 +451,6 @@ int main()
                 input = getch();
             }
         }
-        return 0;
     }
+    return 0;
 }

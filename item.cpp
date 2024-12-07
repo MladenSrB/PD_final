@@ -18,13 +18,18 @@ void Item::print()
     exit(1);
 }
 
-// Potion::Potion(string itemType, string itemName, int price) : Item(itemType, itemName, price) { potionType = itemType; };
-
-void AttackPotion::useItem(Player &aPlayer) { aPlayer.setatk(potionStrength + aPlayer.getatk()); }
+void LuckyPotion::useItem(Player &aPlayer) 
+{
+    int type = rand() % 4;
+    if (type == 0) { aPlayer.sethp(potionStrength + aPlayer.gethp()); }
+    else if (type == 1) { aPlayer.setatk(potionStrength + aPlayer.getatk()); }
+    else if (type == 2) { aPlayer.setExp(potionStrength + aPlayer.getExp()); }
+    else if (type == 3) { aPlayer.addCoin(potionStrength); }
+}
 
 void HealthPotion::useItem(Player &aPlayer) { aPlayer.sethp(potionStrength + aPlayer.gethp()); }
 
-void AttackPotion::print() { cout << itemName << "|| " << "Strength: " << potionStrength << " / $ " << price; }
+void LuckyPotion::print() { cout << itemName << "|| " << "Strength: " << potionStrength << " / $ " << price; }
 
 void HealthPotion::print() { cout << itemName << "|| " << "Strength: " << potionStrength << " / $ " << price; }
 

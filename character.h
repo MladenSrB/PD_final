@@ -69,6 +69,8 @@ public:
 
     void addExp(int pt);
     int getExp() { return exp; };
+    void setExp(int newExp) { exp = newExp; };
+
     void decreaseHp(int blood) { hp -= blood; };
     void addHp(int blood) { hp += blood; };
 };

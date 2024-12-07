@@ -167,7 +167,7 @@ Merchant::Merchant() : Character("Merchant")
 
     srand(time(NULL));
     goods[0] = new HealthPotion(rand() % (25) + 5, 15); // strength of the poisons are randomly assigned within 5~15
-    goods[1] = new AttackPotion(rand() % (10) + 5, 5);
+    goods[1] = new LuckyPotion(rand() % (20) + 10, rand() % (10) + 20);
     goods[2] = new Weapon(rand() % (10) + 1, 10); // 產生ATK 1~10的武器
     goods[3] = new Shield(rand() % (10) + 1, 20);
 }

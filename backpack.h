@@ -20,6 +20,7 @@ public:
     Backpack(int limit);
     ~Backpack();
     int getBackpackLimit() { return backpackLimit; };
+    void setBackpackLimit(int newLimit) { backpackLimit = newLimit; };
     int getBackpackCount() { return backpackCount; };
     void addItem(Item &item);
     void expandSize(int newBlockCnt);

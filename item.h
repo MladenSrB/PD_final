@@ -54,14 +54,14 @@ public:
     void print();
 };
 
-class AttackPotion : public Potion // 待：僅增加存在一些時間
+class LuckyPotion : public Potion
 {
 private:
     int potionStrength = -1;
 
 public:
-    AttackPotion(int strength, int price) : Potion("Attack Potion", "攻擊藥水", price), potionStrength(strength) {};
-    ~AttackPotion() {};
+    LuckyPotion(int strength, int price) : Potion("Lucky Potion", "刮刮樂", price), potionStrength(strength) {};
+    ~LuckyPotion() {};
     void useItem(Player &aPlayer);
     void print();
 };

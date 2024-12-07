@@ -52,7 +52,7 @@ Game::Game(Player &p, bool &key) : SIZE(21), maze(SIZE, vector<int>(SIZE, 0)), p
         maze[0][i] = maze[SIZE - 1][i] = 0;
         maze[i][0] = maze[i][SIZE - 1] = 0;
     }
-    maze[SIZE - 1][SIZE - 2] = 1; // 開洞
+    maze[SIZE - 2][SIZE - 1] = 1; // 開洞
     // 隨機放置提示標示
     placeHints();
 }
@@ -143,7 +143,9 @@ void Game::displayMaze()
     setTerminalSize(30, 50);
     clearAndResetCursor();
     cout << "Level: " << player.getlevel() << " | EXP: " << player.getExp() << " | HP: " << player.gethp()
-         << " | ATK: " << player.getatk() << " | Coin: " << player.getCoin() << "\n\n";
+         << " | ATK: " << player.getatk() << " | Coin: " << player.getCoin();
+    if (haveKey) { cout << " | ⚿";}
+    cout << "\n\n";
 
     // 如果玩家的盾牌正在啟用，顯示盾牌剩餘時間
     int shieldTime = player.getShieldRemainingTime();
@@ -166,13 +168,13 @@ void Game::displayMaze()
                 switch (hints[{i, j}])
                 {
                 case HINT_SHOP:
-                    cout << "M "; // 商人
+                    cout << "𖠋 "; // 商人
                     break;
                 case HINT_COIN:
                     cout << "$ "; // 金幣
                     break;
                 case HINT_MINE:
-                    cout << "★ "; // 地雷
+                    cout << "𓉸 "; // 進入遊戲入口
                     break;
                 }
             }
@@ -214,13 +216,6 @@ void Game::movePlayer(char move)
         newY = playerY + 1;
         player.move();
     }
-    /*else if (move == 'u')
-    {
-        int usedIndex;
-        cout << "請於背包中查看擁有之商品，輸入編號即可立即使用！\n";
-        cin >> usedIndex;
-        player.usedItem(usedIndex);
-    }*/
     else if (move == 'b')
     {
         clearAndResetCursor();
@@ -291,6 +286,7 @@ void Game::handleHint()
         case HINT_COIN:
             player.addCoin(coinAmount);
             cout << "\n哎呦真幸運，恭喜獲得 " << coinAmount << " 金幣！\n";
+            std::this_thread::sleep_for(std::chrono::seconds(1));
             break;
         case HINT_MINE:
             cout << "\n看！前方出現一個神秘入口，進入看看會有驚喜在等你呦！\n";
@@ -335,20 +331,20 @@ void Game::start()
         // 處理提示事件
         handleHint();
 
-        if (player.gethp() <= 0)
+        if (player.gethp() <= 1)
         { // 確認玩家血量
             clearAndResetCursor();
-            std::cout << "你快死了！要看看背包裡有哪些道具能用嗎？\n";
+            std::cout << "生命即將結束！是否需要查看背包裡有哪些道具可以使用嗎？\n";
             std::cout << "請輸入 Y 或 N：";
             char input = getch();
             while (input)
             {
                 char input = getch();
-                if (input == 'y')
+                if (input == 'y' || 'y')
                 {
                     clearAndResetCursor();
                     player.openBackpack();
-                    if (player.gethp() < 0)
+                    if (player.gethp() <= 0)
                     {
                         clearAndResetCursor();
                         std::cout << "Game Over!" << endl;
@@ -359,7 +355,7 @@ void Game::start()
                         break;
                     }
                 }
-                else if (input == 'n')
+                else if (input == 'N' || 'n')
                 {
                     clearAndResetCursor();
                     std::cout << "Game Over!" << endl;
@@ -373,7 +369,7 @@ void Game::start()
         }
 
         // 檢查玩家是否到達終點
-        if (playerX == SIZE - 2 && playerY == SIZE - 2)
+        if (playerX == SIZE - 2 && playerY == SIZE - 1)
         {
             if (haveKey)
             {
@@ -384,7 +380,7 @@ void Game::start()
             }
             else
             {
-                cout << "沒有鑰匙，無法開啟迷宮大門！請賺取更多金幣購買鑰匙！\n";
+                cout << "沒有鑰匙，無法開啟迷宮大門！請返回賺取更多金幣購買鑰匙！\n";
                 std::this_thread::sleep_for(std::chrono::seconds(2));
             }
         }

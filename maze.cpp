@@ -251,6 +251,7 @@ void Game::handleHint()
                 {
                     Item *purchasedItem = merchant->sellGood(input - '0');
                     player.boughtItem(purchasedItem);
+                    std::this_thread::sleep_for(std::chrono::seconds(2));
                     break;
                 }
                 else if (input == '4')

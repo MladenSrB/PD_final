@@ -309,15 +309,18 @@ void Clickgame::startGame(Player &name)
             cout << "exp + 30" << "," << " " << "total exp :" << name.getExp() << endl;
             cout << "hp" << " - " << monsterATK << "," << " " << "total hp :" << name.gethp() << endl;
             cout << "GAME OVER! 遊戲結束！" << endl;
-            for (int sec = 1; sec > 0; sec--)
-            {
-                std::cout << "Returning to maze in " << sec << " seconds...\r";
-                std::cout.flush();
-                std::this_thread::sleep_for(std::chrono::seconds(2));
-                std::cout << "                                         \r";
-                std::cout.flush();
-            }
-            return;
+            std::cout << "Press \"Enter\" to continue\r" << endl;
+        }
+        std::cout.flush();
+        setNonBlockingInput(false); // 恢復終端默認模式
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        for (int sec = 3; sec > 0; sec--)
+        {
+            std::cout << "\nReturning to maze in " << sec << " seconds...\r";
+            std::cout.flush();
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            std::cout << "                                         \r";
+            std::cout.flush();
         }
     }
 }

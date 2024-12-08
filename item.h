@@ -27,6 +27,7 @@ public:
     virtual void useItem(Player &aPlayer);
     virtual void print();
     int getPrice() { return price; }
+    string getName() { return itemName; }
 };
 
 class Potion : public Item

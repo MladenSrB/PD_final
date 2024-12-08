@@ -245,7 +245,6 @@ void Game::handleHint()
             cout << "[4] key: $ 50\n\n輸入商品編號購買，或輸入 esc 離開：";
 
             try
-
             {
                 char input = getch();
                 if (input >= '0' && input < '4')
@@ -259,13 +258,15 @@ void Game::handleHint()
                     if (player.getCoin() >= 50)
                     {
                         player.decreaseCoin(50);
-                        cout << "購買成功！\n";
+                        std::cout << "\n𖠋 Merchant：鑰匙給你，快逃吧！\n";
                         haveKey = true;
+                        std::this_thread::sleep_for(std::chrono::seconds(1));
                         break;
                     }
                     else
                     {
-                        cout << "餘額不足\n";
+                        std::cout << "\n 𖠋 Merchant：喂！小子，你的錢不夠啊！\n" << endl;;
+                        std::this_thread::sleep_for(std::chrono::seconds(1));
                         break;
                     }
                 }

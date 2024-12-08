@@ -450,6 +450,7 @@ int main()
 
                 // 關閉檔案
                 file.close();
+                cout << "        按【 Enter 】回到選單" << endl;
                 while (getch() != '\n')
                 {
                 }

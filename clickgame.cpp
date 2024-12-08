@@ -198,8 +198,8 @@ void Clickgame::startGame(Player &name)
                         cout << "恭喜你成功擊敗怪物！" << endl;
 
                         cout << "總計點擊次數：" << totalClicks << " 次！" << endl;
-                        name.addCoin(100);
-                        name.addExp(100);
+                        name.addCoin(10);
+                        name.addExp(20);
                         cout << "coin + 100" << "," << " " << "total coin :" << name.getCoin() << endl;
                         cout << "exp + 100" << "," << " " << "total exp :" << name.getExp() << endl;
                         cout << "hp - 0" << "," << " " << "total hp :" << name.gethp() << endl;
@@ -214,8 +214,8 @@ void Clickgame::startGame(Player &name)
                         cout << "恭喜你成功擊敗怪物！" << endl;
 
                         cout << "總計點擊次數：" << totalClicks << " 次！" << endl;
-                        name.addCoin(200);
-                        name.addExp(200);
+                        name.addCoin(20);
+                        name.addExp(30);
                         cout << "coin + 200" << "," << " " << "total coin :" << name.getCoin() << endl;
                         cout << "exp + 200" << "," << " " << "total exp :" << name.getExp() << endl;
                         cout << "hp - 0" << "," << " " << "total hp :" << name.gethp() << endl;
@@ -230,8 +230,8 @@ void Clickgame::startGame(Player &name)
                         cout << "恭喜你成功擊敗怪物！" << endl;
 
                         cout << "總計點擊次數：" << totalClicks << " 次！" << endl;
-                        name.addCoin(300);
-                        name.addExp(300);
+                        name.addCoin(30);
+                        name.addExp(50);
                         cout << "coin + 300" << "," << " " << "total coin :" << name.getCoin() << endl;
                         cout << "exp + 300" << "," << " " << "total exp :" << name.getExp() << endl;
                         cout << "hp - 0" << "," << " " << "total hp :" << name.gethp() << endl;
@@ -257,8 +257,7 @@ void Clickgame::startGame(Player &name)
         {
             cout << "\n======================" << endl;
             name.decreaseHp(monsterATK);
-            name.addCoin(10);
-            name.addExp(10);
+            name.addExp(5);
             cout << "FAILED！" << endl;
             cout << "你未能在時間內擊敗怪物！" << endl;
             cout << "總計點擊次數：" << totalClicks << " 次！" << endl;
@@ -280,8 +279,7 @@ void Clickgame::startGame(Player &name)
         {
             cout << "\n======================" << endl;
             name.decreaseHp(monsterATK);
-            name.addCoin(20);
-            name.addExp(20);
+            name.addExp(10);
             cout << "FAILED！" << endl;
             cout << "你未能在時間內擊敗怪物！" << endl;
             cout << "總計點擊次數：" << totalClicks << " 次！" << endl;
@@ -303,8 +301,7 @@ void Clickgame::startGame(Player &name)
         {
             cout << "\n======================" << endl;
             name.decreaseHp(monsterATK);
-            name.addCoin(30);
-            name.addExp(30);
+            name.addExp(20);
             cout << "FAILED！" << endl;
             cout << "你未能在時間內擊敗怪物！" << endl;
             cout << "總計點擊次數：" << totalClicks << " 次！" << endl;

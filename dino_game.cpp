@@ -138,8 +138,8 @@ void DinoGame::startGame(Player &player)
 
         if (countdown <= 0)
         {
-            coin = score / 3;
-            exp = score / 2;
+            coin = score;
+            exp = score * 2;
             player.addCoin(coin);
             player.addExp(exp);
             cout << "Congratulations! You won the game!\n"

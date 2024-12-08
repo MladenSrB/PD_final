@@ -22,9 +22,9 @@ void LuckyPotion::useItem(Player &aPlayer)
 {
     int type = rand() % 4;
     if (type == 0) { aPlayer.sethp(potionStrength * (rand() % 2) + aPlayer.gethp()); }
-    else if (type == 1) { aPlayer.setatk(potionStrength * ((rand() % 2) / 5) + aPlayer.getatk()); }
-    else if (type == 2) { aPlayer.setExp(potionStrength * (rand() % 5) + aPlayer.getExp()); }
-    else if (type == 3) { aPlayer.addCoin(potionStrength * (rand() % 5)); }
+    else if (type == 1) { aPlayer.setatk(potionStrength * ((rand() % 2) / 5) * (rand() % 2) + aPlayer.getatk()); }
+    else if (type == 2) { aPlayer.setExp(potionStrength * (rand() % 5) * (rand() % 2) + aPlayer.getExp()); }
+    else if (type == 3) { aPlayer.addCoin(potionStrength * (rand() % 5) * (rand() % 2)); }
 }
 
 void HealthPotion::useItem(Player &aPlayer) { aPlayer.sethp(potionStrength + aPlayer.gethp()); }

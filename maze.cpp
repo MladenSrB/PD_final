@@ -233,7 +233,7 @@ void Game::handleHint()
     if (hints.count({playerX, playerY}) > 0)
     {
         Merchant *merchant = nullptr;
-        int coinAmount = rand() % 50 + 1;
+        int coinAmount = rand() % 20 + 1;
 
         HintType type = hints[{playerX, playerY}];
         switch (type)
@@ -294,7 +294,7 @@ void Game::handleHint()
             int gameType = rand() % 3;
             if (gameType == 0)
             {
-                RedLightGame redLight(10, 100);
+                RedLightGame redLight(10, 50, 30);
                 redLight.startGame(player);
             }
             else if (gameType == 1)

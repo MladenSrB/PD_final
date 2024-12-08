@@ -146,6 +146,19 @@ void DinoGame::startGame(Player &player)
                  << endl;
             cout << "coin +" << coin << ", total coin: " << player.getCoin() << endl;
             cout << "exp +" << exp << ", total exp: " << player.getExp() << endl;
+
+            std::cout << "按 \"【Enter】\" 回到迷宮\r" << endl;
+            std::cout.flush();
+            setNonBlockingInput(false); // 恢復終端默認模式
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            for (int sec = 1; sec > 0; sec--)
+            {
+                std::cout << "Returning to maze in " << sec << " seconds...\r";
+                std::cout.flush();
+                std::this_thread::sleep_for(std::chrono::seconds(1));
+                std::cout << "                                         \r";
+                std::cout.flush();
+            }
             break;
         }
 
@@ -173,17 +186,18 @@ void DinoGame::startGame(Player &player)
         cout << "coin +" << coin << ", total coin: " << player.getCoin() << endl;
         cout << "exp +" << exp << ", total exp: " << player.getExp() << endl;
         cout << "hp -" << blood << ", total hp: " << player.gethp() << endl;
-    }
 
-    setNonBlockingInput(false);
-    // 提示返回迷宮
-    cout << "Returning to the maze. Press Enter to continue..." << endl;
-
-    char input;
-    while (read(STDIN_FILENO, &input, 1) > 0 && input != '\n')
-    {
-        // 等待用戶按下 Enter 鍵
+        std::cout << "按 \"【Enter】\" 回到迷宮\r" << endl;
+        std::cout.flush();
+        setNonBlockingInput(false); // 恢復終端默認模式
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        for (int sec = 1; sec > 0; sec--)
+        {
+            std::cout << "Returning to maze in " << sec << " seconds...\r";
+            std::cout.flush();
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            std::cout << "                                         \r";
+            std::cout.flush();
+        }
     }
-    cout << "Bye!";
-    std::this_thread::sleep_for(std::chrono::seconds(1));
 }

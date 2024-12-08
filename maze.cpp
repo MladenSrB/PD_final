@@ -285,6 +285,7 @@ void Game::handleHint()
             {
                 cout << "無效的輸入值：" << e.what() << "\n";
             }
+            break;
 
         case HINT_COIN:
             player.addCoin(coinAmount);

@@ -109,6 +109,7 @@ void Clickgame::startGame(Player &name)
     int maxHP = monsterHP;
     const int durationInSeconds = 10;
     srand(static_cast<unsigned int>(time(0)));
+    setNonBlockingInput(true);
 
     // 根據等級設定怪物圖案
     if (monsterlv == 1)
@@ -172,8 +173,10 @@ void Clickgame::startGame(Player &name)
     {
         if (isKeyPressed())
         {
-            char key = getKey();
-            if (key == '\n')
+            char input;
+            if(read(STDIN_FILENO, &input, 1) <= 0)
+                continue;
+            if (input == ' ')
             {
                 roundClicks++;
                 totalClicks++;
@@ -203,6 +206,16 @@ void Clickgame::startGame(Player &name)
                         cout << "coin + 100" << "," << " " << "total coin :" << name.getCoin() << endl;
                         cout << "exp + 100" << "," << " " << "total exp :" << name.getExp() << endl;
                         cout << "hp - 0" << "," << " " << "total hp :" << name.gethp() << endl;
+                        std::cout << "按 \"【Enter】\" 回到迷宮\r" << endl;
+                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        for (int sec = 1; sec > 0; sec--)
+                        {
+                            std::cout << "Returning to maze in " << sec << " seconds...\r";
+                            std::cout.flush();
+                            std::this_thread::sleep_for(std::chrono::seconds(1));
+                            std::cout << "                                         \r";
+                            std::cout.flush();
+                        }
                         return;
                     }
                     else if (monsterlv == 2)
@@ -219,6 +232,16 @@ void Clickgame::startGame(Player &name)
                         cout << "coin + 200" << "," << " " << "total coin :" << name.getCoin() << endl;
                         cout << "exp + 200" << "," << " " << "total exp :" << name.getExp() << endl;
                         cout << "hp - 0" << "," << " " << "total hp :" << name.gethp() << endl;
+                        std::cout << "按 \"【Enter】\" 回到迷宮\r" << endl;
+                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        for (int sec = 1; sec > 0; sec--)
+                        {
+                            std::cout << "Returning to maze in " << sec << " seconds...\r";
+                            std::cout.flush();
+                            std::this_thread::sleep_for(std::chrono::seconds(1));
+                            std::cout << "                                         \r";
+                            std::cout.flush();
+                        }
                         return;
                     }
                     else
@@ -235,11 +258,13 @@ void Clickgame::startGame(Player &name)
                         cout << "coin + 300" << "," << " " << "total coin :" << name.getCoin() << endl;
                         cout << "exp + 300" << "," << " " << "total exp :" << name.getExp() << endl;
                         cout << "hp - 0" << "," << " " << "total hp :" << name.gethp() << endl;
+                        std::cout << "按 \"【Enter】\" 回到迷宮\r" << endl;
+                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                         for (int sec = 1; sec > 0; sec--)
                         {
                             std::cout << "Returning to maze in " << sec << " seconds...\r";
                             std::cout.flush();
-                            std::this_thread::sleep_for(std::chrono::seconds(2));
+                            std::this_thread::sleep_for(std::chrono::seconds(1));
                             std::cout << "                                         \r";
                             std::cout.flush();
                         }
@@ -273,6 +298,7 @@ void Clickgame::startGame(Player &name)
                 std::cout << "                                         \r";
                 std::cout.flush();
             }
+
             return;
         }
         else if (monsterlv == 2)
@@ -309,18 +335,17 @@ void Clickgame::startGame(Player &name)
             cout << "exp + 30" << "," << " " << "total exp :" << name.getExp() << endl;
             cout << "hp" << " - " << monsterATK << "," << " " << "total hp :" << name.gethp() << endl;
             cout << "GAME OVER! 遊戲結束！" << endl;
-            std::cout << "Press \"Enter\" to continue\r" << endl;
-        }
-        std::cout.flush();
-        setNonBlockingInput(false); // 恢復終端默認模式
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        for (int sec = 3; sec > 0; sec--)
-        {
-            std::cout << "\nReturning to maze in " << sec << " seconds...\r";
             std::cout.flush();
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-            std::cout << "                                         \r";
-            std::cout.flush();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            for (int sec = 3; sec > 0; sec--)
+            {
+                std::cout << "\nReturning to maze in " << sec << " seconds...\r";
+                std::cout.flush();
+                std::this_thread::sleep_for(std::chrono::seconds(1));
+                std::cout << "                                         \r";
+                std::cout.flush();
+            }
+            return;
         }
     }
 }

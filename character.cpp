@@ -96,7 +96,8 @@ bool Player::boughtItem(Item *item)
     if (backpack->getBackpackCount() >= backpack->getBackpackLimit())
     {
         cout << "\n𖠋 Merchant：你的包包滿了！\n";
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::cout << "                按【Enter】確認" << endl;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return false;
     }
 
@@ -104,14 +105,16 @@ bool Player::boughtItem(Item *item)
     if (getCoin() < itemPrice)
     {
         cout << "\n𖠋 Merchant：喂！小子，你的錢不夠啊！\n";
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::cout << "                按【Enter】確認" << endl;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return false;
     }
     else
     {
         decreaseCoin(itemPrice);
         cout << "\n𖠋 Merchant：真識貨， " << item->getName() << " 就交給你啦！\n";
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::cout << "                按【Enter】確認" << endl;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
 
     backpack->addItem(*item);

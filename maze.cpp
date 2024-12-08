@@ -260,13 +260,15 @@ void Game::handleHint()
                         player.decreaseCoin(50);
                         std::cout << "\n𖠋 Merchant：鑰匙給你，快逃吧！\n";
                         haveKey = true;
-                        std::this_thread::sleep_for(std::chrono::seconds(1));
+                        std::cout << "                按【Enter】確認" << endl;
+                        while (getch() != '\n'){}
                         break;
                     }
                     else
                     {
                         std::cout << "\n 𖠋 Merchant：喂！小子，你的錢不夠啊！\n" << endl;;
-                        std::this_thread::sleep_for(std::chrono::seconds(1));
+                        std::cout << "                按【Enter】確認" << endl;
+                        while (getch() != '\n'){}
                         break;
                     }
                 }

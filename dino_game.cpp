@@ -138,7 +138,7 @@ void DinoGame::startGame(Player &player)
 
         if (countdown <= 0)
         {
-            coin = score;
+            coin = score * 2;
             exp = score * 2;
             player.addCoin(coin);
             player.addExp(exp);
@@ -164,9 +164,8 @@ void DinoGame::startGame(Player &player)
 
     if (gameOver)
     {
-        /*
-        coin = score / 3;
-        exp = score / 2;
+        coin = score * 2;
+        exp = score * 2;
         player.addCoin(coin);
         player.addExp(exp);
         player.decreaseHp(blood);
@@ -174,15 +173,6 @@ void DinoGame::startGame(Player &player)
         cout << "coin +" << coin << ", total coin: " << player.getCoin() << endl;
         cout << "exp +" << exp << ", total exp: " << player.getExp() << endl;
         cout << "hp -" << blood << ", total hp: " << player.gethp() << endl;
-        */
-        /*for (int sec = 1; sec > 0; sec--)
-        {
-            std::cout << "Returning to maze in " << sec << " seconds...\r";
-            std::cout.flush();
-            std::this_thread::sleep_for(std::chrono::seconds(2));
-            std::cout << "                                         \r";
-            std::cout.flush();
-        }*/
     }
 
     setNonBlockingInput(false);

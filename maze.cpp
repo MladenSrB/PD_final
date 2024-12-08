@@ -430,7 +430,9 @@ int main()
                 // 遊戲說明
                 clearAndResetCursor();
                 // 檔案名稱
-                string filename = "./gameIntro.txt";
+                string filename = "/Users/jakehu/Desktop/PD_final/gameIntro.txt";
+
+                std::cout << "\033[s";
                 
                 // 開啟檔案
                 ifstream file(filename);
@@ -449,6 +451,9 @@ int main()
 
                 // 關閉檔案
                 file.close();
+                setTerminalSize(42, 103);
+                std::cout << "\033[u";
+                cout << "\n                                         按【 Enter 】回主選單\n";
                 while (getch() != '\n')
                 {
                 }

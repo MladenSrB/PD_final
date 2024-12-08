@@ -24,22 +24,22 @@ void LuckyPotion::useItem(Player &aPlayer)
     if (type == 0) { 
         int recoveredHp = potionStrength * (rand() % 2);
         aPlayer.sethp(recoveredHp + aPlayer.gethp());
-        std::cout << "恭喜抽中生命藥水！恢復了 " << recoveredHp << " 點生命值！\n";
+        cout << "恭喜抽中生命藥水！恢復了 " << recoveredHp << " 點生命值！\n";
     }
     else if (type == 1) { 
         int increasedAtk = potionStrength * ((rand() % 2) / 5) * (rand() % 2);
         aPlayer.setatk(increasedAtk + aPlayer.getatk());
-        std::cout << "恭喜抽中武器！攻擊力增加了 " << increasedAtk << " 點！\n";
+        cout << "恭喜抽中武器！攻擊力增加了 " << increasedAtk << " 點！\n";
     }
     else if (type == 2) { 
         int gainedExp = potionStrength * (rand() % 5) * (rand() % 2);
         aPlayer.setExp(gainedExp + aPlayer.getExp());
-        std::cout << "恭喜抽中經驗值禮包！獲得了 " << gainedExp << " 點經驗值！\n";
+        cout << "恭喜抽中經驗值禮包！獲得了 " << gainedExp << " 點經驗值！\n";
     }
     else if (type == 3) { 
         int gainedCoin = potionStrength * (rand() % 5) * (rand() % 2);
         aPlayer.addCoin(gainedCoin);
-        std::cout << "恭喜刮出 " << gainedCoin << " 金幣！\n";
+        cout << "恭喜刮出 " << gainedCoin << " 金幣！\n";
     }
 }
 

@@ -454,6 +454,7 @@ int main()
                 while (getch() != '\n')
                 {
                 }
+                input = getch();
                 break;
             }
             else if (input == '3')

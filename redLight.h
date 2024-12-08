@@ -3,6 +3,7 @@
 #define REDLIGHT
 
 #include "redistributable.h"
+#include "character.h"
 
 const int WINDOW_WIDTH = 30;    // 終端寬度 (用於顯示遊戲)
 const int PLAYER_START_POS = 1; // 玩家起始位置
@@ -13,16 +14,13 @@ const float BUFFER_TIME = 0.4;  // 紅燈緩衝時間
 class RedLightGame
 {
 private:
-    int lostHP = 0;
-    int gainedEXP = 0;
+    const int lostHP;
+    const int gainedEXP;
+    const int gainedCoin;
 
 public:
-    RedLightGame(int HP, int EXP)
-    {
-        lostHP = HP;
-        gainedEXP = EXP;
-    };
-    void startGame();
+    RedLightGame(int HP, int EXP, int coin): lostHP(HP), gainedEXP(EXP), gainedCoin(gainedCoin){};
+    void startGame(Player& player);
     void setNonBlockingInput(bool enable);
 };
 

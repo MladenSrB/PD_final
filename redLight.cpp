@@ -21,7 +21,7 @@ void RedLightGame::setNonBlockingInput(bool enable)
     }
 }
 
-void RedLightGame::startGame()
+void RedLightGame::startGame(Player& player)
 {
     bool isSucceed = false;
 
@@ -118,10 +118,14 @@ void RedLightGame::startGame()
     if (isSucceed)
     {
         std::cout << "You've gained " << gainedEXP << " EXP!" << '\n';
+        std::cout << "++ Coin: " << gainedCoin << endl;
+        player.setExp(player.getExp() + gainedEXP);
+        player.addCoin(gainedCoin);
     }
     else
     {
         std::cout << "You've lost " << lostHP << " pts of HP!" << '\n';
+        player.sethp(player.gethp() - lostHP);
     }
 
     std::cout << "Press \"Enter\" to continue\r" << endl;

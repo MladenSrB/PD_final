@@ -295,7 +295,7 @@ void Game::handleHint()
             if (gameType == 0)
             {
                 RedLightGame redLight(10, 100);
-                redLight.startGame();
+                redLight.startGame(player);
             }
             else if (gameType == 1)
             {

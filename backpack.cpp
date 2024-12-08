@@ -36,10 +36,10 @@ void Backpack::printCentered(const std::string &text, int width)
     std::cout << text;
 }
 
-// 渲染背包界面
+// render backpack interface
 void Backpack::render(Item **items, int cursor, int screenWidth)
 {
-    system("clear"); // 清屏 (Windows 用 "cls")
+    system("clear");
     int titleWidth = screenWidth - 4;
 
     printCentered("======= 背包系統 =======", screenWidth);
@@ -47,7 +47,7 @@ void Backpack::render(Item **items, int cursor, int screenWidth)
 
     for (size_t i = 0; i < backpackCount; ++i)
     {
-        std::cout << (i == cursor ? " > " : "   "); // 游标标志
+        std::cout << (i == cursor ? " > " : "   "); // cursor appearance
         items[i]->print();
         std::cout << "\n";
     }
@@ -107,8 +107,8 @@ void Backpack::useItem(int itemIndex, Player &aPlayer)
 // 主程序
 void Backpack::openBackpack(Player &player)
 {
-    int cursor = 0;             // 游标初始位置
-    const int screenWidth = 50; // 终端宽度
+    int cursor = 0;             // cursor init pos
+    const int screenWidth = 50; // terminal width
 
     while (true)
     {
@@ -118,16 +118,16 @@ void Backpack::openBackpack(Player &player)
         // 捕获用户输入
         char input = getch();
         if (input == '\033')
-        {                              // 方向键序列
-            char secondChar = getch(); // 跳过 '['
+        {                              
+            char secondChar = getch(); // skip [
             if (secondChar == '[')
             {
                 char thirdChar = getch();
                 switch (thirdChar)
                 {
-                case 'A': // 上箭头
+                case 'A': // /033[A
                     cursor = (cursor - 1 + backpackCount) % backpackCount;
-                case 'B': // 下箭头
+                case 'B': // /033[B
                     cursor = (cursor + 1) % backpackCount;
                 }
             }
@@ -137,7 +137,7 @@ void Backpack::openBackpack(Player &player)
             }
         }
         else if (input == '\n')
-        { // Enter 键
+        { // Enter
             if (backpackCount == 0)
             {
                 break;
@@ -151,7 +151,7 @@ void Backpack::openBackpack(Player &player)
             while (getch() != '\n')
             {
             }
-            return; // 结束程序
+            return;
         }
     }
 }

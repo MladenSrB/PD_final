@@ -21,19 +21,34 @@ void Item::print()
 void LuckyPotion::useItem(Player &aPlayer) 
 {
     int type = rand() % 4;
-    if (type == 0) { aPlayer.sethp(potionStrength * (rand() % 2) + aPlayer.gethp()); }
-    else if (type == 1) { aPlayer.setatk(potionStrength * ((rand() % 2) / 5) * (rand() % 2) + aPlayer.getatk()); }
-    else if (type == 2) { aPlayer.setExp(potionStrength * (rand() % 5) * (rand() % 2) + aPlayer.getExp()); }
-    else if (type == 3) { aPlayer.addCoin(potionStrength * (rand() % 5) * (rand() % 2)); }
+    if (type == 0) { 
+        int recoveredHp = potionStrength * (rand() % 2);
+        aPlayer.sethp(recoveredHp + aPlayer.gethp());
+        std::cout << "恭喜抽中生命藥水！恢復了 " << recoveredHp << " 點生命值！\n";
+    }
+    else if (type == 1) { 
+        int increasedAtk = potionStrength * ((rand() % 2) / 5) * (rand() % 2);
+        aPlayer.setatk(increasedAtk + aPlayer.getatk());
+        std::cout << "恭喜抽中武器！攻擊力增加了 " << increasedAtk << " 點！\n";
+    }
+    else if (type == 2) { 
+        int gainedExp = potionStrength * (rand() % 5) * (rand() % 2);
+        aPlayer.setExp(gainedExp + aPlayer.getExp());
+        std::cout << "恭喜抽中經驗值禮包！獲得了 " << gainedExp << " 點經驗值！\n";
+    }
+    else if (type == 3) { 
+        int gainedCoin = potionStrength * (rand() % 5) * (rand() % 2);
+        aPlayer.addCoin(gainedCoin);
+        std::cout << "恭喜刮出 " << gainedCoin << " 金幣！\n";
+    }
 }
+
 
 void HealthPotion::useItem(Player &aPlayer) { aPlayer.sethp(potionStrength + aPlayer.gethp()); }
 
-void LuckyPotion::print() { cout << itemName << "|| " << "Strength: " << potionStrength << " / $ " << price; }
+void LuckyPotion::print() { cout << itemName <<  " : $ " << price; }
 
 void HealthPotion::print() { cout << itemName << "|| " << "Strength: " << potionStrength << " / $ " << price; }
-
-// Weapon::Weapon(int damage, int price) : Item("Weapon", "武器", price), baseATK(damage) {}
 
 void Weapon::useItem(Player &aPlayer) { aPlayer.setatk(baseATK + aPlayer.getatk()); }
 

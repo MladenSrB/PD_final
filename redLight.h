@@ -19,7 +19,7 @@ private:
     const int gainedCoin;
 
 public:
-    RedLightGame(int HP, int EXP, int coin): lostHP(HP), gainedEXP(EXP), gainedCoin(gainedCoin){};
+    RedLightGame(int HP, int EXP, int coin): lostHP(HP), gainedEXP(EXP), gainedCoin(coin){};
     void startGame(Player& player);
     void setNonBlockingInput(bool enable);
 };

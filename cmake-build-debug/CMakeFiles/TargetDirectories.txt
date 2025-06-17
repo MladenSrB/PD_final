@@ -1,3 +1,0 @@
-/Users/jakehu/Desktop/Final_PD/PD_final-1/cmake-build-debug/CMakeFiles/PD_final_1.dir
-/Users/jakehu/Desktop/Final_PD/PD_final-1/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/jakehu/Desktop/Final_PD/PD_final-1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
